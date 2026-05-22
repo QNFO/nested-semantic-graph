@@ -6,6 +6,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **0.11.html: NST Visualization Tool** — Sprint 4.1 deliverable. Interactive HTML/JS viewer: expand/collapse subtrees, two-node LCA selection with highlighting, ultrametric distance display. Embedded 12-tree, 5-language corpus. SVG tree layout, node color coding by category, language badges.
+- **0.11.md: Visualization Tool Docs** — Documentation for 0.11.html: features, architecture, verification.
 - **0.10.py: Turkish Morphological Pipeline** — Sprint 3.1 deliverable. Zemberek simulator, NST builder from morphological parses, subtree search, precision/recall/MRR evaluation. 15-document Turkish corpus, 10 queries, 15/15 ultrametric verification passed.
 - **0.10.md: Pipeline Results** — Full analysis: Mean P@5=0.180, R@5=0.375, F1@5=0.230, MRR=0.382. Honest finding: Type I matching too rigid for morphological variation — motivates Type II/III integration.
 - **0.2.md: Formal Definitions** — 11 formal mathematical definitions, 2 theorems (Ultrametric Inequality, Language Neutrality), connections to Tree Cophenetic and Q-PNA §2-3.

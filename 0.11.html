@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NST Viewer — Nested Semantic Tree Visualization</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0f172a;color:#e2e8f0;display:flex;height:100vh;overflow:hidden}
+#sidebar{width:280px;min-width:280px;background:#1e293b;overflow-y:auto;border-right:1px solid #334155;padding:1rem}
+#sidebar h2{font-size:0.9rem;color:#818cf8;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em}
+#sidebar h3{font-size:0.75rem;color:#64748b;margin:1rem 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em}
+.tree-btn{display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;margin:0.125rem 0;border:none;border-radius:6px;cursor:pointer;font-size:0.75rem;background:transparent;color:#cbd5e1;transition:all 0.15s}
+.tree-btn:hover{background:#334155}
+.tree-btn.active{background:#312e81;color:#c7d2fe;font-weight:600}
+.tree-btn .lang{font-size:0.65rem;color:#64748b;display:block}
+.tree-btn.active .lang{color:#a5b4fc}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#toolbar{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1.5rem;background:#1e293b;border-bottom:1px solid #334155;flex-wrap:wrap}
+#toolbar .badge{font-size:0.7rem;padding:0.25rem 0.75rem;border-radius:12px;font-weight:600}
+.badge-en{background:#166534;color:#86efac}
+.badge-tr{background:#1e3a5f;color:#93c5fd}
+.badge-mh{background:#5b21b6;color:#d8b4fe}
+.badge-fi{background:#1e40af;color:#93c5fd}
+.badge-ik{background:#7c2d12;color:#fed7aa}
+#info{font-size:0.75rem;color:#94a3b8;margin-left:auto}
+#info strong{color:#e2e8f0}
+#canvas-wrap{flex:1;overflow:auto;position:relative;background:radial-gradient(ellipse at center,#1e293b 0%,#0f172a 70%)}
+svg{display:block}
+.node-circle{cursor:pointer;transition:all 0.2s}
+.node-circle:hover{filter:brightness(1.4)}
+.node-circle.selected-a{stroke:#fbbf24;stroke-width:3}
+.node-circle.selected-b{stroke:#34d399;stroke-width:3}
+.node-circle.lca-highlight{stroke:#f472b6;stroke-width:3;stroke-dasharray:6 3;animation:lcaPulse 0.8s ease-in-out infinite alternate}
+@keyframes lcaPulse{from{stroke-opacity:0.6}to{stroke-opacity:1}}
+.node-label{font-size:11px;fill:#e2e8f0;pointer-events:none;user-select:none}
+.node-cat{font-size:9px;fill:#64748b;pointer-events:none}
+.edge{stroke:#475569;stroke-width:1.5;fill:none}
+.edge.lca-path{stroke:#f472b6;stroke-width:2.5;stroke-dasharray:6 3}
+#legend{position:absolute;bottom:1rem;right:1rem;background:#1e293bee;padding:0.75rem 1rem;border-radius:8px;font-size:0.7rem;border:1px solid #334155}
+#legend div{display:flex;align-items:center;gap:0.5rem;margin:0.25rem 0}
+#legend .swatch{width:12px;height:12px;border-radius:3px}
+#status{position:absolute;top:1rem;right:1rem;background:#1e293bee;padding:0.5rem 1rem;border-radius:8px;font-size:0.75rem;border:1px solid #334155;max-width:300px}
+#status .dist{font-size:1.1rem;font-weight:700;color:#f472b6}
+.empty-state{display:flex;align-items:center;justify-content:center;height:100%;color:#475569;font-size:1.1rem}
+</style>
+</head>
+<body>
+<div id="sidebar">
+<h2>NST Viewer</h2>
+<p style="font-size:0.7rem;color:#64748b;margin-bottom:1rem">Sprint 4.1 — 12 trees, 5 languages</p>
+<div id="tree-list"></div>
+<div style="margin-top:1.5rem;font-size:0.65rem;color:#475569">
+<p>Click node A, then node B</p>
+<p>LCA = pink dashed circle</p>
+<p>Dist = ultrametric distance</p>
+<p>Click node to collapse subtree</p>
+</div>
+</div>
+<div id="main">
+<div id="toolbar">
+<span id="tree-title" style="font-size:0.9rem;font-weight:600">Select a tree</span>
+<span id="tree-badge"></span>
+<span id="info">Nodes: <strong id="node-count">-</strong> | Leaves: <strong id="leaf-count">-</strong> | Pairs: <strong id="pair-count">-</strong></span>
+</div>
+<div id="canvas-wrap">
+<svg id="tree-svg" width="100%" height="100%"></svg>
+<div id="status" style="display:none">
+<div>Node A: <strong id="sel-a">-</strong></div>
+<div>Node B: <strong id="sel-b">-</strong></div>
+<div>LCA: <strong id="sel-lca">-</strong></div>
+<div>Distance: <span class="dist" id="sel-dist">-</span></div>
+</div>
+<div id="legend">
+<div><span class="swatch" style="background:#fbbf24"></span> Node A</div>
+<div><span class="swatch" style="background:#34d399"></span> Node B</div>
+<div><span class="swatch" style="background:#f472b6"></span> LCA</div>
+</div>
+<div class="empty-state" id="empty-msg">Select a tree from the sidebar to begin</div>
+</div>
+</div>
+
+<script>
+// ===== TREE DATA (embedded from _tree_data.json) =====
+const TREES = [
+  {
+    "name": "EN-1: Dog bit man yesterday [exact]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": [
+          "y"
+        ]
+      },
+      {
+        "id": "y",
+        "label": "YESTERDAY",
+        "category": "LOCATIVE",
+        "parent_id": "p",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "y"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-y": 4,
+      "m-y": 4
+    }
+  },
+  {
+    "name": "EN-2: Dog chased cat yesterday [diff action]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "c",
+        "label": "CHASE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "ct",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "c",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "ct",
+        "label": "cat",
+        "category": "ENTITY",
+        "parent_id": "c",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "c",
+        "height": 2,
+        "children": [
+          "y"
+        ]
+      },
+      {
+        "id": "y",
+        "label": "YESTERDAY",
+        "category": "LOCATIVE",
+        "parent_id": "p",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "ct",
+      "y"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-ct": 4,
+      "d-y": 4,
+      "ct-y": 4
+    }
+  },
+  {
+    "name": "EN-3: Man bit dog [reversed]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "m",
+          "dg"
+        ]
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "dg",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "m",
+      "dg"
+    ],
+    "leaf_count": 2,
+    "distances": {
+      "m-dg": 4
+    }
+  },
+  {
+    "name": "EN-4: Cat eats fish now [different]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "e",
+        "label": "EAT",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "c",
+          "f",
+          "n"
+        ]
+      },
+      {
+        "id": "c",
+        "label": "cat",
+        "category": "ENTITY",
+        "parent_id": "e",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "f",
+        "label": "fish",
+        "category": "ENTITY",
+        "parent_id": "e",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "n",
+        "label": "PRESENT",
+        "category": "TENSE",
+        "parent_id": "e",
+        "height": 2,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "c",
+      "f",
+      "n"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "c-f": 4,
+      "c-n": 4,
+      "f-n": 4
+    }
+  },
+  {
+    "name": "EN-5: Dog bit man in park yesterday [extended]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 5,
+        "children": [
+          "d",
+          "m",
+          "p",
+          "pk"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": [
+          "y"
+        ]
+      },
+      {
+        "id": "y",
+        "label": "YESTERDAY",
+        "category": "LOCATIVE",
+        "parent_id": "p",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "pk",
+        "label": "park",
+        "category": "LOCATIVE",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "y",
+      "pk"
+    ],
+    "leaf_count": 4,
+    "distances": {
+      "d-m": 5,
+      "d-y": 5,
+      "d-pk": 5,
+      "m-y": 5,
+      "m-pk": 5,
+      "y-pk": 5
+    }
+  },
+  {
+    "name": "EN-6: Dog bit man with stick [instrument]",
+    "language": "English",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "s"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "s",
+        "label": "stick",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "s"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-s": 4,
+      "m-s": 4
+    }
+  },
+  {
+    "name": "TR-1: Kopek adami isirdi [exact, no 'yesterday']",
+    "language": "Turkish",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "p"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-p": 4,
+      "m-p": 4
+    }
+  },
+  {
+    "name": "TR-2: Kopek adami parkta isirdi [extended]",
+    "language": "Turkish",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 5,
+        "children": [
+          "d",
+          "m",
+          "p",
+          "pk"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": []
+      },
+      {
+        "id": "pk",
+        "label": "park",
+        "category": "LOCATIVE",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "p",
+      "pk"
+    ],
+    "leaf_count": 4,
+    "distances": {
+      "d-m": 5,
+      "d-p": 5,
+      "d-pk": 5,
+      "m-p": 5,
+      "m-pk": 5,
+      "p-pk": 5
+    }
+  },
+  {
+    "name": "MH-1: Wahonwa'kahra'ko' [bite event, fused]",
+    "language": "Mohawk",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "p"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-p": 4,
+      "m-p": 4
+    }
+  },
+  {
+    "name": "FI-1: Koira puri miesta eilen [exact]",
+    "language": "Finnish",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": [
+          "y"
+        ]
+      },
+      {
+        "id": "y",
+        "label": "YESTERDAY",
+        "category": "LOCATIVE",
+        "parent_id": "p",
+        "height": 0,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "y"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-y": 4,
+      "m-y": 4
+    }
+  },
+  {
+    "name": "FI-2: Koira juoksi [dog ran, minimal]",
+    "language": "Finnish",
+    "nodes": [
+      {
+        "id": "r",
+        "label": "RUN",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "r",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "r",
+        "height": 2,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "p"
+    ],
+    "leaf_count": 2,
+    "distances": {
+      "d-p": 4
+    }
+  },
+  {
+    "name": "IK-1: Qimmiq angutimik kiisijuq [exact]",
+    "language": "Inuktitut",
+    "nodes": [
+      {
+        "id": "b",
+        "label": "BITE",
+        "category": "ACTION",
+        "parent_id": null,
+        "height": 4,
+        "children": [
+          "d",
+          "m",
+          "p"
+        ]
+      },
+      {
+        "id": "d",
+        "label": "dog",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "m",
+        "label": "man",
+        "category": "ENTITY",
+        "parent_id": "b",
+        "height": 0,
+        "children": []
+      },
+      {
+        "id": "p",
+        "label": "PAST",
+        "category": "TENSE",
+        "parent_id": "b",
+        "height": 2,
+        "children": []
+      }
+    ],
+    "leaf_ids": [
+      "d",
+      "m",
+      "p"
+    ],
+    "leaf_count": 3,
+    "distances": {
+      "d-m": 4,
+      "d-p": 4,
+      "m-p": 4
+    }
+  }
+];
+
+// ===== State =====
+let currentTree = null;
+let nodePositions = {};
+let collapsedNodes = new Set();
+let selectedA = null;
+let selectedB = null;
+let treeNodeMap = {}; // id -> node data
+let parentMap = {};   // id -> parent_id
+
+// ===== Init sidebar =====
+function initSidebar() {
+    const list = document.getElementById('tree-list');
+    const languages = [...new Set(TREES.map(t => t.language))];
+    languages.forEach(lang => {
+        const h3 = document.createElement('h3');
+        h3.textContent = lang;
+        list.appendChild(h3);
+        TREES.filter(t => t.language === lang).forEach((t, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'tree-btn';
+            btn.innerHTML = `<span class="lang">${t.name}</span>`;
+            btn.onclick = () => selectTree(TREES.indexOf(t));
+            list.appendChild(btn);
+        });
+    });
+}
+
+function selectTree(idx) {
+    currentTree = TREES[idx];
+    collapsedNodes.clear();
+    selectedA = null;
+    selectedB = null;
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('empty-msg').style.display = 'none';
+    
+    // Build lookup maps
+    treeNodeMap = {};
+    parentMap = {};
+    currentTree.nodes.forEach(n => {
+        treeNodeMap[n.id] = n;
+        if (n.parent_id) parentMap[n.id] = n.parent_id;
+    });
+    
+    // Find root
+    const root = currentTree.nodes.find(n => !n.parent_id);
+    
+    // Update UI
+    document.getElementById('tree-title').textContent = currentTree.name;
+    document.getElementById('node-count').textContent = currentTree.nodes.length;
+    document.getElementById('leaf-count').textContent = currentTree.leaf_count;
+    document.getElementById('pair-count').textContent = currentTree.distances ? Object.keys(currentTree.distances).length : 0;
+    
+    // Language badge
+    const badge = document.getElementById('tree-badge');
+    const langClass = 'badge-' + currentTree.language.toLowerCase().substring(0,2);
+    badge.className = 'badge ' + langClass;
+    badge.textContent = currentTree.language;
+    
+    // Update sidebar active
+    document.querySelectorAll('.tree-btn').forEach(b => b.classList.remove('active'));
+    const btns = document.querySelectorAll('.tree-btn');
+    if (btns[idx]) btns[idx].classList.add('active');
+    
+    renderTree();
+}
+
+function renderTree() {
+    const svg = document.getElementById('tree-svg');
+    const wrap = document.getElementById('canvas-wrap');
+    const W = wrap.clientWidth - 4;
+    const H = Math.max(wrap.clientHeight - 4, 500);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.innerHTML = '';
+    nodePositions = {};
+    
+    if (!currentTree) return;
+    
+    const root = currentTree.nodes.find(n => !n.parent_id);
+    if (!root) return;
+    
+    // Compute visible nodes (not collapsed)
+    function isVisible(nid) {
+        let p = parentMap[nid];
+        while (p) {
+            if (collapsedNodes.has(p)) return false;
+            p = parentMap[p];
+        }
+        return true;
+    }
+    
+    const visibleNodes = currentTree.nodes.filter(n => isVisible(n.id));
+    const visSet = new Set(visibleNodes.map(n => n.id));
+    
+    // Layout: recursive tree
+    const levelHeight = 70;
+    const nodeRadius = 22;
+    const marginX = 60;
+    
+    // Count visible leaves under each node
+    function countVisibleLeaves(nid) {
+        const node = treeNodeMap[nid];
+        if (!node) return 0;
+        if (!visSet.has(nid)) return 0;
+        if (!node.children.length || node.children.every(c => !visSet.has(c))) return 1;
+        return node.children.reduce((sum, c) => sum + (visSet.has(c) ? countVisibleLeaves(c) : 0), 0);
+    }
+    
+    function layoutNode(nid, x, y, availableWidth) {
+        if (!visSet.has(nid)) return;
+        const node = treeNodeMap[nid];
+        const leafCount = countVisibleLeaves(nid);
+        const cx = x + availableWidth / 2;
+        const cy = y;
+        nodePositions[nid] = { x: cx, y: cy, r: nodeRadius };
+        
+        const children = node.children.filter(c => visSet.has(c));
+        if (children.length === 0) return;
+        
+        const totalLeaves = children.reduce((s, c) => s + countVisibleLeaves(c), 0);
+        let childX = x;
+        children.forEach(child => {
+            const cl = countVisibleLeaves(child);
+            const cw = (cl / totalLeaves) * availableWidth;
+            layoutNode(child, childX, y + levelHeight, cw);
+            childX += cw;
+        });
+    }
+    
+    const totalLeaves = countVisibleLeaves(root.id);
+    layoutNode(root.id, marginX, 60, W - marginX * 2);
+    
+    // Draw edges
+    const edgeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    svg.appendChild(edgeGroup);
+    
+    visibleNodes.forEach(n => {
+        if (!n.parent_id || !nodePositions[n.parent_id]) return;
+        if (!visSet.has(n.parent_id)) return;
+        const p = nodePositions[n.parent_id];
+        const c = nodePositions[n.id];
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', p.x); line.setAttribute('y1', p.y);
+        line.setAttribute('x2', c.x); line.setAttribute('y2', c.y);
+        line.setAttribute('class', 'edge');
+        line.setAttribute('data-from', n.parent_id);
+        line.setAttribute('data-to', n.id);
+        edgeGroup.appendChild(line);
+    });
+    
+    // Draw nodes
+    const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    svg.appendChild(nodeGroup);
+    
+    visibleNodes.forEach(n => {
+        const pos = nodePositions[n.id];
+        if (!pos) return;
+        
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(${pos.x},${pos.y})`);
+        g.setAttribute('data-nid', n.id);
+        
+        // Circle
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('r', nodeRadius);
+        circle.setAttribute('class', 'node-circle');
+        
+        // Color by category
+        const cat = n.category || '';
+        let fill = '#475569';
+        if (cat.includes('SENTENCE') || cat === 'S') fill = '#6366f1';
+        else if (cat.includes('VERB') || cat === 'VP') fill = '#ef4444';
+        else if (cat.includes('SUBJ') || cat.includes('AGENT')) fill = '#f59e0b';
+        else if (cat.includes('OBJ') || cat.includes('PATIENT')) fill = '#3b82f6';
+        else if (cat.includes('ADJ') || cat.includes('LOC') || cat.includes('TEMP')) fill = '#8b5cf6';
+        else if (cat.includes('TENSE')) fill = '#ec4899';
+        else if (cat.includes('CASE') || cat.includes('AGR')) fill = '#14b8a6';
+        else if (n.children.length === 0) fill = '#22c55e';
+        
+        circle.setAttribute('fill', fill);
+        circle.setAttribute('stroke', '#1e293b');
+        circle.setAttribute('stroke-width', '2');
+        
+        // Selection classes
+        if (selectedA === n.id) circle.classList.add('selected-a');
+        if (selectedB === n.id) circle.classList.add('selected-b');
+        
+        // LCA highlight
+        if (selectedA && selectedB && n.id === findLCA(selectedA, selectedB)) {
+            circle.classList.add('lca-highlight');
+        }
+        
+        // Collapse indicator
+        const hasChildren = n.children.length > 0;
+        const isCollapsed = collapsedNodes.has(n.id);
+        if (hasChildren && isCollapsed) {
+            circle.setAttribute('stroke-dasharray', '4 2');
+        }
+        
+        circle.onclick = (e) => {
+            e.stopPropagation();
+            if (hasChildren && !e.shiftKey) {
+                // Toggle collapse
+                if (collapsedNodes.has(n.id)) {
+                    collapsedNodes.delete(n.id);
+                } else {
+                    collapsedNodes.add(n.id);
+                }
+                selectedA = selectedB = null;
+                document.getElementById('status').style.display = 'none';
+                renderTree();
+                return;
+            }
+            handleNodeClick(n.id);
+        };
+        
+        g.appendChild(circle);
+        
+        // Label
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'node-label');
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('dy', '4');
+        label.textContent = n.label.length > 12 ? n.label.substring(0,11) + '...' : n.label;
+        g.appendChild(label);
+        
+        // Category below
+        if (n.category && n.category.length < 30) {
+            const catLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            catLabel.setAttribute('class', 'node-cat');
+            catLabel.setAttribute('text-anchor', 'middle');
+            catLabel.setAttribute('dy', nodeRadius + 14);
+            const shortCat = n.category.split(':').pop() || n.category;
+            catLabel.textContent = shortCat.length > 20 ? shortCat.substring(0,19) : shortCat;
+            g.appendChild(catLabel);
+        }
+        
+        nodeGroup.appendChild(g);
+    });
+    
+    // LCA paths
+    if (selectedA && selectedB) {
+        const lca = findLCA(selectedA, selectedB);
+        if (lca && nodePositions[selectedA] && nodePositions[selectedB] && nodePositions[lca]) {
+            drawLCApath(svg, selectedA, lca, '#fbbf24');
+            drawLCApath(svg, selectedB, lca, '#34d399');
+        }
+    }
+}
+
+function drawLCApath(svg, leafId, lcaId, color) {
+    let nid = leafId;
+    while (nid && nid !== lcaId) {
+        const parent = parentMap[nid];
+        if (!parent) break;
+        const a = nodePositions[nid];
+        const b = nodePositions[parent];
+        if (a && b) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+            line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+            line.setAttribute('stroke', color);
+            line.setAttribute('stroke-width', '2.5');
+            line.setAttribute('stroke-dasharray', '6 3');
+            svg.appendChild(line);
+        }
+        nid = parent;
+        if (nid === lcaId) break;
+    }
+}
+
+function findLCA(id1, id2) {
+    // Build path to root for id1
+    const path1 = new Set();
+    let n = id1;
+    while (n) {
+        path1.add(n);
+        n = parentMap[n];
+    }
+    // Walk up from id2
+    n = id2;
+    while (n) {
+        if (path1.has(n)) return n;
+        n = parentMap[n];
+    }
+    return null;
+}
+
+function handleNodeClick(nid) {
+    if (!selectedA) {
+        selectedA = nid;
+        selectedB = null;
+    } else if (!selectedB && nid !== selectedA) {
+        selectedB = nid;
+    } else {
+        selectedA = nid;
+        selectedB = null;
+    }
+    updateStatus();
+    renderTree();
+}
+
+function updateStatus() {
+    const status = document.getElementById('status');
+    if (!selectedA) {
+        status.style.display = 'none';
+        return;
+    }
+    status.style.display = 'block';
+    const na = treeNodeMap[selectedA];
+    document.getElementById('sel-a').textContent = na ? na.label : selectedA;
+    
+    if (selectedB) {
+        const nb = treeNodeMap[selectedB];
+        document.getElementById('sel-b').textContent = nb ? nb.label : selectedB;
+        const lca = findLCA(selectedA, selectedB);
+        const lcaNode = lca ? treeNodeMap[lca] : null;
+        document.getElementById('sel-lca').textContent = lcaNode ? lcaNode.label : (lca || '?');
+        
+        // Compute ultrametric distance
+        let dist = null;
+        if (currentTree && currentTree.distances) {
+            const key1 = `${selectedA}-${selectedB}`;
+            const key2 = `${selectedB}-${selectedA}`;
+            dist = currentTree.distances[key1] || currentTree.distances[key2];
+        }
+        document.getElementById('sel-dist').textContent = dist !== null && dist !== undefined ? dist.toFixed(3) : '?';
+    } else {
+        document.getElementById('sel-b').textContent = '(click node B)';
+        document.getElementById('sel-lca').textContent = '-';
+        document.getElementById('sel-dist').textContent = '-';
+    }
+}
+
+// Init
+initSidebar();
+// Auto-select first tree
+if (TREES.length > 0) selectTree(0);
+
+// Resize handler
+window.addEventListener('resize', () => { if (currentTree) renderTree(); });
+</script>
+</body>
+</html>

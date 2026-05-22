@@ -10,7 +10,7 @@
 
 | ID | Task | DoD Criteria | Est. Effort | Status | Assignee |
 |:---|:-----|:-------------|:------------|:-------|:---------|
-| S4.1 | NST Visualization Tool | Interactive HTML/JS viewer: expand/collapse, LCA highlight, ultrametric distance display. Demonstrated on 5-language corpus. | 5h | [~] | Agent |
+| S4.1 | NST Visualization Tool | Interactive HTML/JS viewer: expand/collapse, LCA highlight, ultrametric distance display. Demonstrated on 5-language corpus. | 5h | [x] | Agent |
 | S4.2 | Cross-Linguistic Corpus Spec | Research parallel text resources (WALS, UD, Parallel Bible). Define format template. | 3h | [ ] | Agent |
 | S4.3 | Publication Final Polish | Update 0.7.md with corpus stats, add evaluation results section. | 2h | [ ] | Agent |
 | S4.4 | Project Close-Out | Execute §12 close-out checklist. Final report. | 1h | [ ] | Agent |
