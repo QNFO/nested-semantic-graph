@@ -15,14 +15,14 @@
 
 | Priority | Item | Description | Est. Effort | Dependencies | Status |
 |:---------|:-----|:------------|:------------|:-------------|:-------|
-| P0 | S5: Python Prototype: Graph Parser & Matcher | Parse sentences to trees, brute-force subgraph isomorphism, ultrametric ranking | 3h | S1, S3, S4 | Not Started |
-| P0 | S6: Computational Pathway | Component diagram, feasibility assessment, Q-PNA interface mapping | 2h | S4, S5 | Not Started |
-| P0 | S7: Reader Testing & Revision | Blind reader test, address issues, polish | 2h | All above | Not Started |
-| P1 | Morphological Analyzer Survey | Survey existing tools for Inuktitut, Cree, Mohawk, Turkish | 3h | S3 | Not Started |
-| P1 | Python Prototype: Graph Parser | Full parser that converts example sentences to graphs | 4h | S5 | Not Started |
-| P1 | Python Prototype: Sub-Graph Matcher | Full subgraph isomorphism for larger graphs | 4h | S5 | Not Started |
-| P2 | Cross-Linguistic Corpus | Collect parallel texts in English + polysynthetic languages | 8h | S3 | Not Started |
-| P2 | Evaluation Framework | Define precision/recall metrics for sub-graph search | 3h | S5 | Not Started |
+| P0 | S2.3: Enhanced Corpus | Expand from 5 to 15+ documents, add 2 more languages | 2h | S2.2 | Not Started |
+| P0 | S2.4: Turkish in 0.2.py | Add Turkish tree to formal verification suite | 1h | — | Not Started |
+| P0 | S2.5: Publication Polish | 0.7.md: abstract, author block, YAML, curly quotes, Language Gate | 2h | All above | Not Started |
+| P0 | S2.6: Reader Testing Round 2 | Second blind reader test per §11.5 CPL L27 | 1h | S2.5 | Not Started |
+| P1 | Python Prototype: Graph Parser | Full parser that converts example sentences to graphs from morphological output | 4h | S2.2 | Not Started |
+| P1 | Python Prototype: Sub-Graph Matcher | Full subgraph isomorphism for larger graphs (100+ nodes) | 4h | S2.1 | Not Started |
+| P2 | Cross-Linguistic Corpus | Collect parallel texts in English + polysynthetic languages | 8h | S2.2 | Not Started |
+| P2 | Evaluation Framework | Define precision/recall metrics for sub-graph search | 3h | S2.1 | Not Started |
 | P2 | Visualization Tool | Interactive tree viewer for nested semantic graphs | 5h | S1 | Not Started |
 | P3 | Full-Scale Implementation | Production search engine on nested semantic graphs | 100h+ | All P1 | Not Started |
 | P3 | Neural Semantic Parser | Train or fine-tune a parser for the common representation | 100h+ | P2 | Not Started |
@@ -31,11 +31,9 @@
 
 | Priority | Item | Deliverable | Completed | Notes |
 |:---------|:-----|:------------|:----------|:------|
-| P0 | S0: Project Setup | 7 mandatory docs, git repo, due diligence | 2026-05-22 | Commits 38f119e through f0b5ab7 |
-| P0 | S1: Formal Definitions | 0.2.md + 0.2.py | 2026-05-22 | 11 definitions, 2 theorems, 22/22 ultrametric verified |
-| P0 | S2: Literature Grounding | 0.1.md Internal Literature Review | 2026-05-22 | 35+ archived projects, 12 papers, 6 GitHub repos |
-| P0 | S3: Cross-Linguistic Examples | 0.4.md | 2026-05-22 | English, Turkish, Mohawk — isomorphic NSTs |
-| P0 | S4: Search Architecture Spec | 0.3.md Sub-Graph Matching Search Spec | 2026-05-22 | Three-tier matching, RANK-AND-CLUSTER, Q-PNA pipeline |
+| P0 | Sprint 1 (S0-S6) | 0.1.md through 0.7.md, 0.2.py, 0.5.py | 2026-05-22 | 7 tasks, 8 content files, 14 commits |
+| P0 | S2.1: Type III Matching | 0.8.py (272 lines) | 2026-05-22 | Zhang-Shasha DP. Pipeline: I/II/III fallback. |
+| P0 | S2.2: Morphological Survey | 0.8.md | 2026-05-22 | English→Mohawk. Mohawk FST gap identified. |
 
 ---
-*Last updated: 2026-05-22 (S0-S4 complete, S5 next)*
+*Last updated: 2026-05-22 (Sprint 2: 2/7 complete)*
