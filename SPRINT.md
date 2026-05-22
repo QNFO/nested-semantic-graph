@@ -1,22 +1,19 @@
-# Sprint 4 — Evidence to Impact
-# Sprint Backlog — Nested Semantic Graph
+# Sprint 5 — Production Readiness
+# Sprint Backlog -- Nested Semantic Graph
 
-**Sprint Goal:** Build visualization tool, research cross-linguistic corpus resources, prepare final publication.
+**Sprint Goal:** Eliminate code duplication, scale the matcher, seed the real parallel corpus.
 **Started:** 2026-05-22
-**Target End:** 2026-05-29
 **Status:** Active
 
 ## Active Tasks
 
-| ID | Task | DoD Criteria | Est. Effort | Status | Assignee |
-|:---|:-----|:-------------|:------------|:-------|:---------|
-| S4.1 | NST Visualization Tool | Interactive HTML/JS viewer: expand/collapse, LCA highlight, ultrametric distance display. Demonstrated on 5-language corpus. | 5h | [x] | Agent |
-| S4.2 | Cross-Linguistic Corpus Spec | Research parallel text resources (WALS, UD, Parallel Bible). Define format template. | 3h | [x] | Agent |
-| S4.3 | Publication Final Polish | Update 0.7.md with corpus stats, add evaluation results section. | 2h | [ ] | Agent |
-| S4.4 | Project Close-Out | Execute §12 close-out checklist. Final report. | 1h | [ ] | Agent |
+| ID | Task | Est. | Status |
+|:---|:-----|:-----|:-------|
+| S5.1 | Shared NST Library — nst_core.py | 2h | [~] |
+| S5.2 | Large-Graph Matcher | 4h | [ ] |
+| S5.3 | Corpus Seed — 5 Propositions (JSON) | 2h | [ ] |
+| S5.4 | Documentation Finalization | 0.5h | [ ] |
 
 ## Sprint Health
 
 - Tasks completed: 0/4
-- DoD verified: 0/4
-- Blocked items: 0
