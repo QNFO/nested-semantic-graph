@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-05-22
 **Active Branch:** `feature/initial-setup`
-**Current Phase:** P1 Planning (Initiation complete)
+**Current Phase:** P2 Execution (4 of 7 sprint tasks complete)
 
 ## What This Project Is
 
@@ -11,7 +11,7 @@ This project develops the **computational architecture** for sub-graph matching 
 ## Current Status
 
 **Active task:** S4 — Python Prototype: Graph Parser & Matcher
-**Last completed:** S3 — Cross-Linguistic Examples (2026-05-22)
+**Last completed:** S3 — Cross-Linguistic Examples (2026-05-22) — English, Turkish, Mohawk isomorphic NSTs
 **Blocked?** No
 
 ### Due Diligence Results (2026-05-22, Third Pass)
@@ -91,17 +91,23 @@ The user has produced an extensive body of published work (all with DOIs) in May
 
 | File | Action | Status |
 |:-----|:-------|:-------|
-| `README.md` | CREATE → EDIT × 2 | Complete rewrite pending commit |
-| `PROJECT STATE.md` | CREATE → EDIT × 2 | Major update pending commit |
-| `SPRINT.md` | CREATE → EDIT | Scope adjusted pending commit |
-| `CHANGELOG.md` | CREATE → EDIT | Updated pending commit |
-| `BACKLOG.md` | CREATE | Committed |
+| `README.md` | CREATE → EDIT × 2 | Committed |
+| `PROJECT STATE.md` | CREATE → EDIT × 4 | Being edited |
+| `SPRINT.md` | CREATE → EDIT × 4 | Being edited |
+| `CHANGELOG.md` | CREATE → EDIT × 4 | Being edited |
+| `BACKLOG.md` | CREATE → EDIT | Being edited |
 | `LEARNINGS.md` | CREATE | Committed |
-| `DECISIONS.md` | CREATE → EDIT | ADR-0003 added, more needed |
+| `DECISIONS.md` | CREATE → EDIT | Committed (ADRs 1-4) |
+| `RISK-REGISTER.md` | CREATE | Committed |
+| `0.1.md` | CREATE | Committed — Internal Literature Review |
+| `0.2.md` | CREATE | Committed — Formal Definitions |
+| `0.2.py` | CREATE | Committed — Python Verification |
+| `0.3.md` | CREATE | Committed — Sub-Graph Search Spec |
+| `0.4.md` | CREATE | Committed — Cross-Linguistic Examples |
 
 ## Open Issues
 
-- None — project scoping refined after due diligence.
+- O3: Phase-gated files (DEFINITION-OF-DONE.md, CONTRIBUTING.md, PROJECT-CHARTER.md) need to be created — needed for P2 compliance
 
 ## Active Risks
 

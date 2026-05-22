@@ -19,14 +19,16 @@
 
 ## Key Prior Work to Reference
 
-| Paper | DOI | Section to Reference |
-|:------|:----|:---------------------|
-| Few Become One | 10.5281/zenodo.20328374 | All — the foundation |
-| Q-PNA v2.0 | 10.5281/zenodo.20287742 | §2 (math), §3 (architecture), §5 (token calculus) |
-| Language-Info-Architecture | 10.5281/zenodo.20137616 | Mutual exclusion, entropy gradient |
-| Tree Cophenetic | 10.5281/zenodo.20213043 | §2 (ultrametric inequality proof) |
-| How Geometry Creates Memory | 10.5281/zenodo.20061155 | §5 (Threshold Principle) |
-| 0.1.md (this project) | — | Complete internal literature review |
+| Reference | Path/DOI | Role |
+|:----------|:---------|:-----|
+| 0.1.md — Internal Literature Review | This project | Complete research landscape (35+ projects, 12 papers, 6 repos) |
+| 0.2.md / 0.2.py — Formal Definitions | This project | Mathematical grounding, Python-verified |
+| 0.3.md — Search Spec | This project | Sub-graph matching architecture |
+| 0.4.md — Cross-Linguistic Examples | This project | English/Turkish/Mohawk isomorphism |
+| Few Become One | 10.5281/zenodo.20328374 | Core conceptual paper |
+| Q-PNA v2.0 | 10.5281/zenodo.20287742 | Neural architecture (encoder layer) |
+| Language-Info-Architecture | 10.5281/zenodo.20137616 | Entropy gradient, mutual exclusion |
+| Tree Cophenetic | 10.5281/zenodo.20213043 | Ultrametric inequality proof |
 
 ## Completed (Retained for Audit)
 
