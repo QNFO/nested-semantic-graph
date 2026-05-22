@@ -10,8 +10,8 @@ This project develops the **computational architecture** for sub-graph matching 
 
 ## Current Status
 
-**Active task:** S0 — Revised Project Setup (due diligence complete, scope redefined)
-**Last completed:** Major due diligence (2026-05-22) — Discovered that "Few Become One" IS the core paper, published today
+**Active task:** S2 — Sub-Graph Matching Search Spec
+**Last completed:** S1 — Formal Definitions & Grounding (2026-05-22)
 **Blocked?** No
 
 ### Due Diligence Results (2026-05-22, Third Pass)
