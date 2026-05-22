@@ -12,10 +12,10 @@
 | S2.0 | Backlog Refresh | Update BACKLOG.md for Sprint 1 completion. | 0.5h | [~] | Agent |
 | S2.1 | Type III Matching | Implement tree edit distance (Zhang-Shasha) in 0.8.py. Integrate with pipeline. | 3h | [x] | Agent |
 | S2.2 | Morphological Analyzer Survey | Research existing tools. Produce 0.8.md survey report. | 3h | [x] | Agent |
-| S2.3 | Enhanced Corpus | Expand from 5 to 15+ documents, add 2 more languages. | 2h | [ ] | Agent |
-| S2.4 | Turkish Verification | Add Turkish tree to 0.2.py formal verification suite. | 1h | [ ] | Agent |
-| S2.5 | Publication Polish | Upgrade 0.7.md: abstract, author block, YAML, curly quotes, Language Gate scan. | 2h | [ ] | Agent |
-| S2.6 | Reader Testing Round 2 | Second blind reader test on polished draft per §11.5. | 1h | [ ] | Agent |
+| S2.3 | Enhanced Corpus | Expand from 5 to 15+ documents, add 2 more languages. | 2h | [x] | Agent |
+| S2.4 | Turkish Verification | Add Turkish tree to 0.2.py formal verification suite. | 1h | [x] | Agent |
+| S2.5 | Publication Polish | Upgrade 0.7.md: abstract, author block, YAML, curly quotes, Language Gate scan. | 2h | [x] | Agent |
+| S2.6 | Reader Testing Round 2 | Second blind reader test on polished draft per §11.5. | 1h | [x] | Agent |
 
 ## Completed (Retained for Audit)
 
