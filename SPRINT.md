@@ -14,7 +14,7 @@
 | S2 | Sub-Graph Matching Search Spec | Specify the search problem: query graph $G_q$, document graph corpus $\{G_d\}$, matching criteria (subgraph isomorphism, approximate matching), ranking via ultrametric graph distance. Connect to Q-PNA's token encoding as the parser front-end. | 2h | [x] | Agent |
 | S3 | Cross-Linguistic Examples | English "dog bit man yesterday" and Mohawk equivalent mapped to same semantic graph. Linearization rules for each language. Connect to Language-Info-Architecture's entropy gradient findings. | 2h | [x] | Agent |
 | S4 | Python Prototype: Graph Parser & Matcher | Parse example sentences to trees, implement brute-force subgraph isomorphism for small graphs, compute ultrametric graph distance for ranking. | 3h | [x] | Agent |
-| S5 | Computational Pathway | Component diagram connecting: morphological analyzer → semantic parser → graph encoder → index → query engine. Map to existing Q-PNA architecture. Feasibility assessment. | 2h | [ ] | Agent |
+| S5 | Computational Pathway | Component diagram connecting: morphological analyzer → semantic parser → graph encoder → index → query engine. Map to existing Q-PNA architecture. Feasibility assessment. | 2h | [x] | Agent |
 | S6 | Reader Testing & Revision | Blind reader test on draft (REVIEWER subagent). Address blocking/major issues. Polish for publication. | 2h | [ ] | Agent |
 
 ## Key Prior Work to Reference
@@ -39,6 +39,7 @@
 | S2 | Sub-Graph Matching Search Spec | 2026-05-22 | **Test-Path:** `0.3.md` (20,946 bytes). Commit: `10a0ad2`. Three-tier matching criteria, RANK-AND-CLUSTER algorithm, Q-PNA integration, walked example. |
 | S3 | Cross-Linguistic Examples | 2026-05-22 | **Test-Path:** `0.4.md`. Commit: `5575da8`. English, Turkish, Mohawk — isomorphic NSTs. Linearization algebra formalized. |
 | S4 | Python Prototype | 2026-05-22 | **Test-Path:** `0.5.py` (560 lines). Commit: `e567b57`. Full pipeline: 5-doc corpus, 3-language search, 8/8 ultrametric, Type I/II matching, cluster detection. |
+| S5 | Computational Pathway | 2026-05-22 | **Test-Path:** `0.6.md`. Commit: `a20a877`. Five-stage architecture, feasibility assessment, Q-PNA integration map, 4-phase roadmap. |
 
 ## Blocked
 
@@ -48,8 +49,8 @@
 
 ## Sprint Health
 
-- Tasks completed: 5/7
-- DoD verified: 5/7
+- Tasks completed: 6/7
+- DoD verified: 6/7
 - Blocked items: 0
 - Retrospective filed: No
 
