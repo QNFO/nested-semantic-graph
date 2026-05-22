@@ -6,6 +6,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **0.12.md: Cross-Linguistic Corpus Specification** — Sprint 4.2 deliverable. Format template (§4), parallel text resource research (UD, Parallel Bible, WALS, ODIN, Tatoeba — §5), 3-phase expansion plan to 27 documents (§6), verification protocol (§7), UD-to-NST mapping strategy.
 - **0.11.html: NST Visualization Tool** — Sprint 4.1 deliverable. Interactive HTML/JS viewer: expand/collapse subtrees, two-node LCA selection with highlighting, ultrametric distance display. Embedded 12-tree, 5-language corpus. SVG tree layout, node color coding by category, language badges.
 - **0.11.md: Visualization Tool Docs** — Documentation for 0.11.html: features, architecture, verification.
 - **0.10.py: Turkish Morphological Pipeline** — Sprint 3.1 deliverable. Zemberek simulator, NST builder from morphological parses, subtree search, precision/recall/MRR evaluation. 15-document Turkish corpus, 10 queries, 15/15 ultrametric verification passed.
