@@ -1,7 +1,7 @@
-# Sprint 3 — From Prototype to Evidence
+# Sprint 4 — Evidence to Impact
 # Sprint Backlog — Nested Semantic Graph
 
-**Sprint Goal:** Close the gap between prototype and publishable empirical evidence. Add evaluation metrics, scale the corpus, connect to real morphological analysis.
+**Sprint Goal:** Build visualization tool, research cross-linguistic corpus resources, prepare final publication.
 **Started:** 2026-05-22
 **Target End:** 2026-05-29
 **Status:** Active
@@ -10,15 +10,13 @@
 
 | ID | Task | DoD Criteria | Est. Effort | Status | Assignee |
 |:---|:-----|:-------------|:------------|:-------|:---------|
-| S3.1 | Turkish Morphological Pipeline | Simulate Zemberek output → NST builder. Demonstrate end-to-end from morphological analysis to search. Include precision/recall evaluation. | 4h | [~] | Agent |
-| S3.2 | Evaluation Framework Spec | Produce 0.10.md: precision@k, recall@k, MRR for sub-graph search. | 2h | [ ] | Agent |
-| S3.3 | Expanded Corpus 25+ | Grow from 12 to 25+ documents with more event structures. | 2h | [ ] | Agent |
-| S3.4 | Scalability Benchmarking | Measure query latency vs. corpus size. Profile matching. 0.11.md. | 2h | [ ] | Agent |
-| S3.5 | Publication Finalization | Update 0.7.md with evaluation results. | 1h | [ ] | Agent |
-| S3.6 | Decision Gate | Publish-or-continue assessment. | 0.5h | [ ] | Agent |
+| S4.1 | NST Visualization Tool | Interactive HTML/JS viewer: expand/collapse, LCA highlight, ultrametric distance display. Demonstrated on 5-language corpus. | 5h | [~] | Agent |
+| S4.2 | Cross-Linguistic Corpus Spec | Research parallel text resources (WALS, UD, Parallel Bible). Define format template. | 3h | [ ] | Agent |
+| S4.3 | Publication Final Polish | Update 0.7.md with corpus stats, add evaluation results section. | 2h | [ ] | Agent |
+| S4.4 | Project Close-Out | Execute §12 close-out checklist. Final report. | 1h | [ ] | Agent |
 
 ## Sprint Health
 
-- Tasks completed: 0/6
-- DoD verified: 0/6
+- Tasks completed: 0/4
+- DoD verified: 0/4
 - Blocked items: 0
