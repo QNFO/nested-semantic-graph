@@ -11,34 +11,24 @@
 
 ## Context
 
-The user's proposal defines the nested semantic graph as a tree of conceptual primitives where distance between nodes satisfies the strong triangle condition (ultrametric property). Alternative representations were considered: flat feature vectors (standard in NLP), directed acyclic graphs (more general than trees), or general graphs without hierarchical constraints.
-
-The user's existing corpus contains extensive work on ultrametric physics (2026-02 through 2026-05), establishing ultrametric trees as a unifying geometric object in quantum gravity, fault tolerance, and spacetime. Using the same formalism for linguistics creates a bridge between these domains.
+The ultrametric tree is the established data structure across the 2026-05 publication cluster: "Few Become One" uses it for cross-linguistic semantics, Q-PNA uses Bruhat-Tits trees for neural encoding, Tree Cophenetic formalizes cophenetic distance, and "The Tree Is Real" validates the structure computationally. The decision is to adopt this as the project's representation.
 
 ## Decision
 
-We will use rooted trees as the fundamental data structure for semantic representation, with the ultrametric distance defined as the height of the lowest common ancestor: $d(x,y) = \text{height}(\text{LCA}(x,y))$. This satisfies:
-
-$$d(x,z) \leq \max\{d(x,y), d(y,z)\}$$
-
-The tree is the canonical form. Graphs that appear non-tree-like (e.g., when a concept modifies multiple parents) will be resolved into trees by duplication or by selecting a primary attachment, with cross-references handled as a secondary indexing layer.
+We will use rooted trees as the fundamental data structure for semantic representation, with the ultrametric distance defined as the height of the lowest common ancestor: $d(x,y) = h(\text{LCA}(x,y))$, satisfying the strong triangle condition $d(x,z) \leq \max\{d(x,y), d(y,z)\}$. This follows Tree Cophenetic §2.
 
 ## Consequences
 
 ### What Becomes Easier
-- Direct connection to the existing ultrametric physics corpus — same mathematics, different domain
-- Ultrametric distance computation is $O(\log n)$ with appropriate LCA data structures
-- Tree edit distance and tree alignment have well-studied algorithms
-- The strong triangle condition guarantees metric properties that simplify clustering and ranking
+- Direct connection to the entire 2026-05 ultrametric publication cluster — same mathematics
+- Q-PNA and ultrametric-ai-poc provide working implementations to build on
+- Ultrametric distance computation is $O(\log n)$ with LCA data structures
 
 ### What Becomes Harder
-- Representing non-hierarchical semantic relationships (e.g., coreference across branches, symmetric relations)
-- Some linguistic phenomena (control structures, long-distance dependencies) require tree-to-tree mappings rather than simple subtree matching
-- The tree constraint may force representational choices that are not universally agreed upon in linguistics
+- Non-hierarchical semantic relationships require auxiliary structures
 
 ### Risks Accepted
-- We accept that some semantic relationships will require auxiliary structures beyond the primary tree
-- We accept that the choice between competing tree representations for the same sentence is a research question to be addressed, not a solved problem
+- As documented in Tree Cophenetic §7, the tree constraint may force representational choices
 
 ---
 
@@ -51,32 +41,11 @@ The tree is the canonical form. Graphs that appear non-tree-like (e.g., when a c
 
 ## Context
 
-Per Section 10 of the system prompt, all content/output files must use versioned filenames (`MAJOR.MINOR.ext`). This ensures chronological audit trail and provenance. The 7 mandatory documentation files are exempt per §10.2 Rule 0.
+Per Section 10 of the system prompt. The 7 mandatory documentation files are exempt.
 
 ## Decision
 
-All content files (drafts, code, data, figures) will use `MAJOR.MINOR[.PATCH].ext` naming:
-- First draft: `0.1.md`
-- Supporting Python: `0.1.py`
-- Publication-ready documents use descriptive filenames (per §11.1) when moved to releases
-
-## Consequences
-
-### What Becomes Easier
-- Full audit trail from git log + version numbers
-- Trivial cross-referencing between document and its supporting code/data
-- No namespace collisions from descriptive names
-
-### What Becomes Harder
-- Must run Python scan before creating any new file to determine next version
-- Descriptive filenames only appear at publication time
-
-### Risks Accepted
-- Version numbers alone don't convey content — mitigated by README.md and CHANGELOG.md
-
----
-
-*Generated from ADR-TEMPLATE.md v1.0. For index, see docs/adr/README.md*
+All content files use `MAJOR.MINOR[.PATCH].ext` naming. Publication-ready documents use descriptive filenames (per §11.1).
 
 ---
 
@@ -89,35 +58,48 @@ All content files (drafts, code, data, figures) will use `MAJOR.MINOR[.PATCH].ex
 
 ## Context
 
-Due diligence discovered that the PILE OF BABEL project (2025-10, ~90 files, published with DOI) implements the exact same architectural pattern as the Nested Semantic Graph but in a different domain. PILE OF BABEL proposes a "Rosetta Stone Protocol" that deconstructs physics jargon into universal primitives (circle, integer, rotation), establishing a "Terminology Crosswalk" mapping equivalent concepts across domains. The NSG proposes to deconstruct natural language sentences into universal semantic primitives (concept nodes in an ultrametric tree), establishing a cross-linguistic semantic mapping.
-
-The architectural isomorphism is:
-```
-PILE OF BABEL:  Physics jargon → Circle/Integer primitives → Understanding
-NSG:            Natural languages → Nested Semantic Graph → Sub-graph search
-```
-
-Both are instances of a "common representation beneath diverse surface forms" architecture. Failing to acknowledge this connection risks the NSG appearing derivative or failing to benefit from PILE OF BABEL's conceptual groundwork.
+PILE OF BABEL (2025-10) pioneered the "common representation beneath diverse surface forms" architecture — the Rosetta Stone / Crosswalk Mandate pattern. PILE OF BABEL maps physics jargon to circle/integer primitives; NSG maps natural languages to nested semantic graphs. Both are instances of the same architectural pattern.
 
 ## Decision
 
-We will explicitly position the NSG as a **linguistic instantiation** of the Rosetta Stone / Crosswalk Mandate architecture pioneered in PILE OF BABEL. The introduction of the NSG paper will:
+We will explicitly position the NSG as a linguistic instantiation of the Rosetta Stone architecture, acknowledging PILE OF BABEL as precedent. The Crosswalk Mandate ("Actively seek to identify and unify underlying concepts, even if they are presented with different terminology across domains") is adopted as a design principle.
 
-1. Acknowledge PILE OF BABEL as the direct architectural predecessor
-2. Articulate the domain shift: from scientific discourse (PILE OF BABEL) to natural language (NSG)
-3. Frame the contribution as: "PILE OF BABEL showed that complex terminological systems can be mapped to a common representation. The NSG extends this insight to natural language, showing that the full morphological spectrum — from isolating to polysynthetic — can be unified under the same architecture, with ultrametric topology providing the mathematical backbone."
-4. Include PILE OF BABEL's "Crosswalk Mandate" as a design principle for the NSG
+---
+
+# ADR-0004: Position Project as Computational Sequel to "Few Become One"
+
+**Status:** Accepted
+**Date:** 2026-05-22
+**Supersedes:** None
+**Superseded by:** None
+
+## Context
+
+Due diligence discovered that "Few Become One: Polysynthetic Communication and the Ultrametric Architecture of Language" (DOI: 10.5281/zenodo.20328374, published 2026-05-22) IS the core conceptual paper on the nested semantic graph for cross-linguistic semantics — published on the same date this project was initiated. This means the project is not producing a novel conceptual argument from scratch; the conceptual foundation is already published.
+
+## Decision
+
+This project will be positioned as the **computational implementation sequel** to "Few Become One." The first versioned draft (0.1.md) will:
+1. Cite "Few Become One" as the conceptual foundation (DOI: 10.5281/zenodo.20328374)
+2. Focus on the sub-graph matching search architecture (Section IV of "Few Become One" gestures at this)
+3. Provide Python prototypes: semantic tree parser, subgraph matcher, ultrametric ranking engine
+4. Connect to the Q-PNA neural architecture (DOI: 10.5281/zenodo.20287742) for the encoding layer
+5. Reference Language-Info-Architecture (DOI: 10.5281/zenodo.20137616) for quantitative grounding
 
 ## Consequences
 
 ### What Becomes Easier
-- The conceptual argument is strengthened by precedent — "this pattern works" has a worked example
-- PILE OF BABEL's methodology (deconstruction into primitives, crosswalk tables) provides a template for NSG's own cross-linguistic mapping
-- The publication can position itself as a natural extension of an established research thread
+- Don't need to re-establish the linguistic argument — it's done
+- Can focus entirely on the engineering: algorithms, data structures, prototypes
+- The publication can be shorter and more focused
 
 ### What Becomes Harder
-- Must carefully articulate the difference between scientific terminology translation and natural language translation
-- Must avoid over-claiming — PILE OF BABEL addresses discourse-level language, not morphological diversity
+- Must avoid redundancy with "Few Become One" while still being self-contained
+- Must carefully articulate what is novel (search architecture) vs. what is established (tree representation)
 
 ### Risks Accepted
-- The connection may be seen as stretching an analogy — mitigated by explicitly identifying both the isomorphism and the domain difference
+- The project's contribution may be seen as incremental rather than foundational — mitigated by making the computational architecture genuinely novel
+
+---
+
+*Generated from ADR-TEMPLATE.md v1.0.*
