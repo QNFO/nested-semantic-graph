@@ -1,6 +1,7 @@
-# Sprint Backlog — Sprint 2: From Prototype to Production
+# Sprint 3 — From Prototype to Evidence
+# Sprint Backlog — Nested Semantic Graph
 
-**Sprint Goal:** Complete the matching engine, survey production readiness, and prepare the synthesis for publication.
+**Sprint Goal:** Close the gap between prototype and publishable empirical evidence. Add evaluation metrics, scale the corpus, connect to real morphological analysis.
 **Started:** 2026-05-22
 **Target End:** 2026-05-29
 **Status:** Active
@@ -9,33 +10,15 @@
 
 | ID | Task | DoD Criteria | Est. Effort | Status | Assignee |
 |:---|:-----|:-------------|:------------|:-------|:---------|
-| S2.0 | Backlog Refresh | Update BACKLOG.md for Sprint 1 completion. | 0.5h | [~] | Agent |
-| S2.1 | Type III Matching | Implement tree edit distance (Zhang-Shasha) in 0.8.py. Integrate with pipeline. | 3h | [x] | Agent |
-| S2.2 | Morphological Analyzer Survey | Research existing tools. Produce 0.8.md survey report. | 3h | [x] | Agent |
-| S2.3 | Enhanced Corpus | Expand from 5 to 15+ documents, add 2 more languages. | 2h | [x] | Agent |
-| S2.4 | Turkish Verification | Add Turkish tree to 0.2.py formal verification suite. | 1h | [x] | Agent |
-| S2.5 | Publication Polish | Upgrade 0.7.md: abstract, author block, YAML, curly quotes, Language Gate scan. | 2h | [x] | Agent |
-| S2.6 | Reader Testing Round 2 | Second blind reader test on polished draft per §11.5. | 1h | [x] | Agent |
-
-## Completed (Retained for Audit)
-
-| ID | Task | Completed | Verification |
-|:---|:-----|:----------|:-------------|
-| S2.1 | Type III Matching | 2026-05-22 | **Test-Path:** 0.8.py (272 lines). Commit: adaaece. Zhang-Shasha DP. Pipeline: Type I/I/III. Distribution: I:1, II:1, III:3. Doc4 (previously unmatched) now Type III match. |
-| S2.2 | Morphological Analyzer Survey | 2026-05-22 | **Test-Path:** 0.8.md. Commit: adaaece. Covers English→Mohawk. Identifies Mohawk FST gap as primary bottleneck. |
-
-## Blocked
-
-| ID | Task | Blocked By | Resolution |
-|:---|:-----|:-----------|:-----------|
-| — | — | — | — |
+| S3.1 | Turkish Morphological Pipeline | Simulate Zemberek output → NST builder. Demonstrate end-to-end from morphological analysis to search. Include precision/recall evaluation. | 4h | [~] | Agent |
+| S3.2 | Evaluation Framework Spec | Produce 0.10.md: precision@k, recall@k, MRR for sub-graph search. | 2h | [ ] | Agent |
+| S3.3 | Expanded Corpus 25+ | Grow from 12 to 25+ documents with more event structures. | 2h | [ ] | Agent |
+| S3.4 | Scalability Benchmarking | Measure query latency vs. corpus size. Profile matching. 0.11.md. | 2h | [ ] | Agent |
+| S3.5 | Publication Finalization | Update 0.7.md with evaluation results. | 1h | [ ] | Agent |
+| S3.6 | Decision Gate | Publish-or-continue assessment. | 0.5h | [ ] | Agent |
 
 ## Sprint Health
 
-- Tasks completed: 2/7
-- DoD verified: 2/7
+- Tasks completed: 0/6
+- DoD verified: 0/6
 - Blocked items: 0
-- Retrospective filed: No
-
----
-*Next: S2.3 — Enhanced Corpus. SAY "WHAT'S NEXT? PROCEED" to continue.*
