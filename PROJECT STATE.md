@@ -10,8 +10,8 @@ This project develops the **computational architecture** for sub-graph matching 
 
 ## Current Status
 
-**Active task:** S2 — Sub-Graph Matching Search Spec
-**Last completed:** S1 — Formal Definitions & Grounding (2026-05-22)
+**Active task:** S3 — Cross-Linguistic Examples
+**Last completed:** S2 — Sub-Graph Matching Search Spec (2026-05-22)
 **Blocked?** No
 
 ### Due Diligence Results (2026-05-22, Third Pass)
