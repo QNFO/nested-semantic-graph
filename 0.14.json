@@ -1,0 +1,148 @@
+{
+  "corpus": "NSG Parallel Corpus Seed",
+  "version": "0.14",
+  "date": "2026-05-22",
+  "propositions": [
+    {
+      "id": "P1",
+      "description": "The dog bit the man yesterday",
+      "entries": {
+        "English": {
+          "surface": "The dog bit the man yesterday",
+          "morphemes": [
+            {"morpheme": "dog", "gloss": "dog.NOM", "nst_node": "dog", "nst_cat": "ENTITY"},
+            {"morpheme": "bite", "gloss": "bite.V", "nst_node": "BITE", "nst_cat": "ACTION"},
+            {"morpheme": "-ed", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"},
+            {"morpheme": "man", "gloss": "man.ACC", "nst_node": "man", "nst_cat": "ENTITY"},
+            {"morpheme": "yesterday", "gloss": "yesterday.ADV", "nst_node": "YESTERDAY", "nst_cat": "LOCATIVE"}
+          ],
+          "nst": {"root": "BITE", "nodes": 5, "height": 4.0}
+        },
+        "Turkish": {
+          "surface": "Kopek adami dun isirdi",
+          "morphemes": [
+            {"morpheme": "kopek", "gloss": "dog.NOM", "nst_node": "dog", "nst_cat": "ENTITY"},
+            {"morpheme": "adam", "gloss": "man", "nst_node": "man", "nst_cat": "ENTITY"},
+            {"morpheme": "-i", "gloss": "ACC", "nst_node": null, "nst_cat": null},
+            {"morpheme": "dun", "gloss": "yesterday.ADV", "nst_node": "YESTERDAY", "nst_cat": "LOCATIVE"},
+            {"morpheme": "isir", "gloss": "bite.V", "nst_node": "BITE", "nst_cat": "ACTION"},
+            {"morpheme": "-di", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"}
+          ],
+          "nst": {"root": "BITE", "nodes": 5, "height": 4.0}
+        }
+      }
+    },
+    {
+      "id": "P2",
+      "description": "The man saw the woman",
+      "entries": {
+        "English": {
+          "surface": "The man saw the woman",
+          "morphemes": [
+            {"morpheme": "man", "gloss": "man.NOM", "nst_node": "man", "nst_cat": "ENTITY"},
+            {"morpheme": "see", "gloss": "see.V", "nst_node": "SEE", "nst_cat": "ACTION"},
+            {"morpheme": "-ed", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"},
+            {"morpheme": "woman", "gloss": "woman.ACC", "nst_node": "woman", "nst_cat": "ENTITY"}
+          ],
+          "nst": {"root": "SEE", "nodes": 4, "height": 4.0}
+        },
+        "Turkish": {
+          "surface": "Adam kadini gordu",
+          "morphemes": [
+            {"morpheme": "adam", "gloss": "man.NOM", "nst_node": "man", "nst_cat": "ENTITY"},
+            {"morpheme": "kadin", "gloss": "woman", "nst_node": "woman", "nst_cat": "ENTITY"},
+            {"morpheme": "-i", "gloss": "ACC", "nst_node": null, "nst_cat": null},
+            {"morpheme": "gor", "gloss": "see.V", "nst_node": "SEE", "nst_cat": "ACTION"},
+            {"morpheme": "-du", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"}
+          ],
+          "nst": {"root": "SEE", "nodes": 4, "height": 4.0}
+        }
+      }
+    },
+    {
+      "id": "P3",
+      "description": "The child ate the apple quickly",
+      "entries": {
+        "English": {
+          "surface": "The child ate the apple quickly",
+          "morphemes": [
+            {"morpheme": "child", "gloss": "child.NOM", "nst_node": "child", "nst_cat": "ENTITY"},
+            {"morpheme": "eat", "gloss": "eat.V", "nst_node": "EAT", "nst_cat": "ACTION"},
+            {"morpheme": "-ed", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"},
+            {"morpheme": "apple", "gloss": "apple.ACC", "nst_node": "apple", "nst_cat": "ENTITY"},
+            {"morpheme": "quickly", "gloss": "quickly.ADV", "nst_node": "quickly", "nst_cat": "MANNER"}
+          ],
+          "nst": {"root": "EAT", "nodes": 5, "height": 4.0}
+        },
+        "Turkish": {
+          "surface": "Cocuk elmayi hizla yedi",
+          "morphemes": [
+            {"morpheme": "cocuk", "gloss": "child.NOM", "nst_node": "child", "nst_cat": "ENTITY"},
+            {"morpheme": "elma", "gloss": "apple", "nst_node": "apple", "nst_cat": "ENTITY"},
+            {"morpheme": "-yi", "gloss": "ACC", "nst_node": null, "nst_cat": null},
+            {"morpheme": "hizla", "gloss": "quickly.ADV", "nst_node": "quickly", "nst_cat": "MANNER"},
+            {"morpheme": "ye", "gloss": "eat.V", "nst_node": "EAT", "nst_cat": "ACTION"},
+            {"morpheme": "-di", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"}
+          ],
+          "nst": {"root": "EAT", "nodes": 5, "height": 4.0}
+        }
+      }
+    },
+    {
+      "id": "P4",
+      "description": "The bird flew over the house",
+      "entries": {
+        "English": {
+          "surface": "The bird flew over the house",
+          "morphemes": [
+            {"morpheme": "bird", "gloss": "bird.NOM", "nst_node": "bird", "nst_cat": "ENTITY"},
+            {"morpheme": "fly", "gloss": "fly.V", "nst_node": "FLY", "nst_cat": "ACTION"},
+            {"morpheme": "-ew", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"},
+            {"morpheme": "house", "gloss": "house.LOC", "nst_node": "house", "nst_cat": "LOCATIVE"}
+          ],
+          "nst": {"root": "FLY", "nodes": 4, "height": 4.0}
+        },
+        "Turkish": {
+          "surface": "Kus evin uzerinden uctu",
+          "morphemes": [
+            {"morpheme": "kus", "gloss": "bird.NOM", "nst_node": "bird", "nst_cat": "ENTITY"},
+            {"morpheme": "ev", "gloss": "house", "nst_node": "house", "nst_cat": "LOCATIVE"},
+            {"morpheme": "uc", "gloss": "fly.V", "nst_node": "FLY", "nst_cat": "ACTION"},
+            {"morpheme": "-tu", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"}
+          ],
+          "nst": {"root": "FLY", "nodes": 4, "height": 4.0}
+        }
+      }
+    },
+    {
+      "id": "P5",
+      "description": "The woman gave the book to the man",
+      "entries": {
+        "English": {
+          "surface": "The woman gave the book to the man",
+          "morphemes": [
+            {"morpheme": "woman", "gloss": "woman.NOM", "nst_node": "woman", "nst_cat": "ENTITY"},
+            {"morpheme": "give", "gloss": "give.V", "nst_node": "GIVE", "nst_cat": "ACTION"},
+            {"morpheme": "-ed", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"},
+            {"morpheme": "book", "gloss": "book.ACC", "nst_node": "book", "nst_cat": "ENTITY"},
+            {"morpheme": "man", "gloss": "man.DAT", "nst_node": "man", "nst_cat": "ENTITY"}
+          ],
+          "nst": {"root": "GIVE", "nodes": 5, "height": 4.0}
+        },
+        "Turkish": {
+          "surface": "Kadin kitabi adama verdi",
+          "morphemes": [
+            {"morpheme": "kadin", "gloss": "woman.NOM", "nst_node": "woman", "nst_cat": "ENTITY"},
+            {"morpheme": "kitap", "gloss": "book", "nst_node": "book", "nst_cat": "ENTITY"},
+            {"morpheme": "-i", "gloss": "ACC", "nst_node": null, "nst_cat": null},
+            {"morpheme": "adam", "gloss": "man", "nst_node": "man", "nst_cat": "ENTITY"},
+            {"morpheme": "-a", "gloss": "DAT", "nst_node": null, "nst_cat": null},
+            {"morpheme": "ver", "gloss": "give.V", "nst_node": "GIVE", "nst_cat": "ACTION"},
+            {"morpheme": "-di", "gloss": "PAST", "nst_node": "PAST", "nst_cat": "TENSE"}
+          ],
+          "nst": {"root": "GIVE", "nodes": 5, "height": 4.0}
+        }
+      }
+    }
+  ]
+}
