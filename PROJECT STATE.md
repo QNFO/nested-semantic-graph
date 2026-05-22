@@ -107,7 +107,7 @@ The user has produced an extensive body of published work (all with DOIs) in May
 
 ## Open Issues
 
-- O3: Phase-gated files (DEFINITION-OF-DONE.md, CONTRIBUTING.md, PROJECT-CHARTER.md) need to be created — needed for P2 compliance
+- None — all management files current, phase-gated files created, risks tracked.
 
 ## Active Risks
 
