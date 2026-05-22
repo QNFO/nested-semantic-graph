@@ -11,8 +11,16 @@ This project develops the theory of the Nested Semantic Graph — a language-neu
 ## Current Status
 
 **Active task:** S0 — Project Setup & Initial Draft
-**Last completed:** None (project just created)
+**Last completed:** Due diligence (2026-05-22) — Found 4 directly relevant archived projects
 **Blocked?** No
+
+### Due Diligence Results (2026-05-22)
+| Finding | Location | Relevance |
+|:--------|:---------|:----------|
+| **PILE OF BABEL** (CRITICAL) | `Archive\projects\2025\10\PILE OF BABEL\` | Same Rosetta Stone architecture: common representation beneath diverse surface forms. "Terminology Crosswalk" = cross-linguistic mapping. "Crosswalk Mandate" = NSG's core principle. |
+| **Semantic Observatory** | `Archive\projects\2025\09\Semantic Observatory\` | "Semantic field" concept, 5-layer stack (Substrate→Embedding→Evolution→Interrogation→Navigation) |
+| **Grammar of Interaction** | `Archive\projects\2025\09\Grammar of Interaction\` | Graph formalism (directed acyclic hypergraphs) with "grammar" metaphors for physics |
+| **SHEAF** | `Archive\projects\2025\10\SHEAF\` | Mathematical sheaf theory for unifying physics — abstract version of common representation pattern |
 
 ## Next Agent Handoff
 
@@ -45,13 +53,13 @@ This project develops the theory of the Nested Semantic Graph — a language-neu
 
 | File | Action | Status |
 |:-----|:-------|:-------|
-| `README.md` | CREATE | Pending commit |
-| `PROJECT STATE.md` | CREATE | Pending commit |
-| `SPRINT.md` | CREATE | Pending commit |
-| `CHANGELOG.md` | CREATE | Pending commit |
-| `BACKLOG.md` | CREATE | Pending commit |
-| `LEARNINGS.md` | CREATE | Pending commit |
-| `DECISIONS.md` | CREATE | Pending commit |
+| `README.md` | CREATE → EDIT | Pending commit |
+| `PROJECT STATE.md` | CREATE → EDIT | Pending commit |
+| `SPRINT.md` | CREATE → EDIT | Pending commit |
+| `CHANGELOG.md` | CREATE → EDIT | Pending commit |
+| `BACKLOG.md` | CREATE | Committed |
+| `LEARNINGS.md` | CREATE | Committed |
+| `DECISIONS.md` | CREATE → EDIT | Pending commit |
 
 ## Open Issues
 
@@ -63,6 +71,7 @@ This project develops the theory of the Nested Semantic Graph — a language-neu
 |:--------|:------------|:-------|:--------------|
 | R1 | Gap between ultrametric physics formalism and linguistics application may require substantial translation work | Monitoring | 2026-05-22 |
 | R2 | No external linguistics/AI literature imported yet — search request manifest needed | Active | 2026-05-22 |
+| R3 | PILE OF BABEL connection must be made explicit — the architectural isomorphism (Rosetta Stone across domains) must be clearly articulated to avoid appearing derivative | Active | 2026-05-22 |
 
 ---
 

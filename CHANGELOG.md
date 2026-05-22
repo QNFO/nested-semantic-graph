@@ -6,10 +6,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- Project initialized from user proposal "A Common Representation: The Nested Semantic Graph"
-- All 7 mandatory documentation files created (README, PROJECT STATE, SPRINT, CHANGELOG, BACKLOG, LEARNINGS, DECISIONS)
-- Git repository initialized on `feature/initial-setup` branch
-- Due diligence completed: identified ultrametric physics corpus (2026-02 through 2026-05) as prior work; confirmed no prior linguistics/NLP application exists
+- Due diligence expanded: discovered 4 directly relevant archived projects (PILE OF BABEL, Semantic Observatory, Grammar of Interaction, SHEAF)
+- README.md Prior Work section rewritten with full due diligence findings
+- PILE OF BABEL identified as direct architectural predecessor (Rosetta Stone / Crosswalk Mandate)
 
 ## [2026-05-22] — Project Initialization
 

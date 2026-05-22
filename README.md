@@ -23,17 +23,35 @@ This project develops the theory, formalism, and implementation pathway for nest
 
 ## Prior Work
 
+### Direct Predecessor: PILE OF BABEL (2025-10)
+**Location:** `Archive\projects\2025\10\PILE OF BABEL\` (90+ files; published with DOI)
+**Core thesis:** Scientific language has become a "Tower of Babel" — incomprehensible jargon that obscures simple underlying concepts. The solution is a **"Rosetta Stone Protocol"** that deconstructs complex terminology into universal primitives (circle, integer, rotation, projection), enabling a **"Universal Pattern Language"** accessible to anyone.
+
+**Direct architectural connection to NSG:** PILE OF BABEL and NSG share the same fundamental architecture — a **common representation** beneath diverse surface forms:
+- **PILE OF BABEL:** Physics jargon → Circle/Integer primitives → Understanding
+- **NSG:** Natural languages → Nested Semantic Graph → Sub-graph search
+
+The "Terminology Crosswalk" table (0.1.1) mapping equivalent concepts across domains is the exact same pattern as NSG's cross-linguistic semantic mapping. The "Crosswalk Mandate" — "Actively seek to identify and unify underlying concepts, even if they are presented with different terminology across domains" — is the NSG's core operational principle.
+
+**Key difference:** PILE OF BABEL addresses *scientific discourse* (terminology inflation within physics). NSG addresses *natural language* (morphological diversity across languages). Both are instances of the same Rosetta Stone architecture.
+
+### Semantic Observatory (2025-09)
+**Location:** `Archive\projects\2025\09\Semantic Observatory\`
+Uses "semantic field" concept and 5-layer stack (Substrate → Embedding → Evolution → Interrogation → Navigation) for modeling coupled climate-finance systems. The stack architecture and constraint potential Φ formalism are structurally analogous to the NSG's parsing pipeline.
+
+### Grammar of Interaction (2025-09)
+**Location:** `Archive\projects\2025\09\Grammar of Interaction\`
+Formalizes a "grammar of interaction" using directed acyclic hypergraphs for a relational model of physics. Vertices = interaction events, hyperedges = quantum systems, production rules for graph growth. Directly analogous to NSG's node/edge/parsing formalism with a different domain target.
+
 ### Ultrametric Physics Series (2026-02 through 2026-05)
 The ultrametric formalism is well-developed in the physics corpus:
-- **Ultrametric Quantum Computation** (2026-04) — Ultrametricity as the organizing principle for fault-tolerant quantum computing
-- **Ultrametric Physics from Discrete Hierarchical Geometry** (2026-04) — Comprehensive treatment of ultrametric spacetime
-- **Ultrametric Relaxation Dynamics in Topological Quantum Memory** (2026-02) — Ultrametric distance on hierarchical state spaces
+- **Ultrametric Quantum Computation** (2026-04) — Ultrametricity as the organizing principle
+- **Ultrametric Physics from Discrete Hierarchical Geometry** (2026-04) — Comprehensive treatment
+- **Bruhat--Tits Tree as a Unifying Geometric Object** (2026-05) — Trees as universal geometric substrate
 - **Spectral Dynamics on Bruhat-Tits Trees** (2026-02) — Tree-based spectral analysis
-- **Ballistic Transport on the Bruhat-Tits Tree** (2026-02) — Dynamics on tree structures
-- **Bruhat--Tits Tree as a Unifying Geometric Object** (2026-05) — Most recent synthesis; trees as universal geometric substrate
 
-### Gap Identified
-The ultrametric corpus applies tree topology to physics (quantum gravity, fault tolerance, spacetime). This project is the first application to **linguistics and natural language processing** — bridging ultrametric topology with computational semantics.
+### Novel Contribution
+This project is the first to apply the Rosetta Stone / common representation architecture to **cross-linguistic semantics** — bridging natural language morphology with ultrametric topology. The mathematics transfers directly from the ultrametric physics corpus; the domain translation from scientific discourse (PILE OF BABEL) to natural language (NSG) is the novel contribution.
 
 ### Relevant External Frameworks
 - **Abstract Meaning Representation (AMR)** — Graph-based semantic representation (Banarescu et al., 2013)

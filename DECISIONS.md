@@ -77,3 +77,47 @@ All content files (drafts, code, data, figures) will use `MAJOR.MINOR[.PATCH].ex
 ---
 
 *Generated from ADR-TEMPLATE.md v1.0. For index, see docs/adr/README.md*
+
+---
+
+# ADR-0003: Explicitly Connect NSG to PILE OF BABEL's Rosetta Stone Architecture
+
+**Status:** Accepted
+**Date:** 2026-05-22
+**Supersedes:** None
+**Superseded by:** None
+
+## Context
+
+Due diligence discovered that the PILE OF BABEL project (2025-10, ~90 files, published with DOI) implements the exact same architectural pattern as the Nested Semantic Graph but in a different domain. PILE OF BABEL proposes a "Rosetta Stone Protocol" that deconstructs physics jargon into universal primitives (circle, integer, rotation), establishing a "Terminology Crosswalk" mapping equivalent concepts across domains. The NSG proposes to deconstruct natural language sentences into universal semantic primitives (concept nodes in an ultrametric tree), establishing a cross-linguistic semantic mapping.
+
+The architectural isomorphism is:
+```
+PILE OF BABEL:  Physics jargon → Circle/Integer primitives → Understanding
+NSG:            Natural languages → Nested Semantic Graph → Sub-graph search
+```
+
+Both are instances of a "common representation beneath diverse surface forms" architecture. Failing to acknowledge this connection risks the NSG appearing derivative or failing to benefit from PILE OF BABEL's conceptual groundwork.
+
+## Decision
+
+We will explicitly position the NSG as a **linguistic instantiation** of the Rosetta Stone / Crosswalk Mandate architecture pioneered in PILE OF BABEL. The introduction of the NSG paper will:
+
+1. Acknowledge PILE OF BABEL as the direct architectural predecessor
+2. Articulate the domain shift: from scientific discourse (PILE OF BABEL) to natural language (NSG)
+3. Frame the contribution as: "PILE OF BABEL showed that complex terminological systems can be mapped to a common representation. The NSG extends this insight to natural language, showing that the full morphological spectrum — from isolating to polysynthetic — can be unified under the same architecture, with ultrametric topology providing the mathematical backbone."
+4. Include PILE OF BABEL's "Crosswalk Mandate" as a design principle for the NSG
+
+## Consequences
+
+### What Becomes Easier
+- The conceptual argument is strengthened by precedent — "this pattern works" has a worked example
+- PILE OF BABEL's methodology (deconstruction into primitives, crosswalk tables) provides a template for NSG's own cross-linguistic mapping
+- The publication can position itself as a natural extension of an established research thread
+
+### What Becomes Harder
+- Must carefully articulate the difference between scientific terminology translation and natural language translation
+- Must avoid over-claiming — PILE OF BABEL addresses discourse-level language, not morphological diversity
+
+### Risks Accepted
+- The connection may be seen as stretching an analogy — mitigated by explicitly identifying both the isomorphism and the domain difference
