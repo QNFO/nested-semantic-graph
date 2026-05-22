@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NST Viewer — Nested Semantic Tree Visualization</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1a1a2e; color: #e0e0e0; display: flex; height: 100vh; }
+.sidebar { width: 320px; background: #16213e; padding: 16px; overflow-y: auto; border-right: 2px solid #0f3460; }
+.sidebar h2 { color: #e94560; margin-bottom: 12px; font-size: 1.1em; }
+.sidebar select, .sidebar button { width: 100%; padding: 8px; margin: 4px 0; background: #0f3460; color: #e0e0e0; border: 1px solid #e94560; border-radius: 4px; cursor: pointer; font-size: 0.9em; }
+.sidebar button:hover { background: #e94560; color: #fff; }
+.sidebar .info-box { background: #0f3460; border-radius: 6px; padding: 12px; margin: 8px 0; font-size: 0.85em; }
+.sidebar .info-box h3 { color: #e94560; margin-bottom: 6px; font-size: 0.95em; }
+.sidebar .info-box span { color: #f0a500; font-weight: bold; }
+.sidebar .legend { margin-top: 12px; }
+.sidebar .legend-item { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 0.8em; }
+.sidebar .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.main { flex: 1; display: flex; flex-direction: column; }
+.toolbar { padding: 8px 16px; background: #16213e; border-bottom: 2px solid #0f3460; display: flex; gap: 8px; align-items: center; font-size: 0.85em; }
+.toolbar span { color: #f0a500; font-weight: bold; }
+.canvas { flex: 1; overflow: auto; padding: 20px; display: flex; align-items: center; justify-content: center; }
+svg { background: #1a1a2e; border-radius: 8px; }
+.node-circle { cursor: pointer; transition: all 0.2s; }
+.node-circle:hover { filter: brightness(1.4); }
+.node-circle.selected { stroke: #fff; stroke-width: 3px; }
+.node-circle.lca-highlight { stroke: #e94560; stroke-width: 4px; stroke-dasharray: 6 3; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.3; } }
+.edge-line { stroke: #555; stroke-width: 1.5px; }
+.edge-line.lca-path { stroke: #e94560; stroke-width: 2.5px; }
+.label-text { fill: #e0e0e0; font-size: 11px; text-anchor: middle; pointer-events: none; }
+.category-text { fill: #888; font-size: 9px; text-anchor: middle; pointer-events: none; }
+.distance-label { fill: #f0a500; font-size: 10px; text-anchor: middle; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Nested Semantic Tree Viewer</h2>
+
+  <select id="treeSelect" onchange="loadTree()">
+    <option value="">-- Select a tree --</option>
+  </select>
+
+  <div class="info-box" id="treeInfo">
+    <h3>Tree Info</h3>
+    <div>Language: <span id="infoLang">—</span></div>
+    <div>Nodes: <span id="infoNodes">—</span></div>
+    <div>Leaves: <span id="infoLeaves">—</span></div>
+    <div>Height: <span id="infoHeight">—</span></div>
+    <div>Ultrametric: <span id="infoUltra">—</span></div>
+  </div>
+
+  <div class="info-box" id="selectionInfo" style="display:none">
+    <h3>Selection</h3>
+    <div id="selInfo">Click two nodes to compare</div>
+  </div>
+
+  <div class="info-box" id="lcaInfo" style="display:none">
+    <h3>LCA & Distance</h3>
+    <div>LCA: <span id="lcaLabel">—</span></div>
+    <div>Distance d(A,B): <span id="lcaDist">—</span></div>
+    <div>Ultrametric: <span id="lcaUltra">—</span></div>
+  </div>
+
+  <button onclick="clearSelection()">Clear Selection</button>
+
+  <div class="legend">
+    <h3>Node Categories</h3>
+    <div class="legend-item"><span class="legend-dot" style="background:#e94560"></span> ACTION (event)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#0f3460"></span> ENTITY (participant)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#f0a500"></span> TENSE (temporal)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#00b894"></span> LOCATIVE (place)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#6c5ce7"></span> MANNER (how)</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="toolbar">
+    <span id="statusMsg">Select a tree from the sidebar to begin</span>
+  </div>
+  <div class="canvas" id="canvas">
+    <svg id="treeSvg" width="900" height="500"></svg>
+  </div>
+</div>
+
+<script>
+// ===== CORPUS DATA (from 0.11.py) =====
+const corpusData = [
+  { name: "EN-01: Dog bit man yesterday [exact]", lang: "English", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 },
+    { id: "y", label: "YESTERDAY", cat: "LOCATIVE", parent: "p", h: 0.0 }
+  ]},
+  { name: "EN-02: Dog chased cat yesterday [diff action]", lang: "English", nodes: [
+    { id: "c", label: "CHASE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "c", h: 0.0 },
+    { id: "ct", label: "cat", cat: "ENTITY", parent: "c", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "c", h: 2.0 },
+    { id: "y", label: "YESTERDAY", cat: "LOCATIVE", parent: "p", h: 0.0 }
+  ]},
+  { name: "EN-03: Man bit dog [reversed]", lang: "English", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "dg",label: "dog", cat: "ENTITY", parent: "b", h: 0.0 }
+  ]},
+  { name: "EN-05: Dog bit man in park yesterday [extended]", lang: "English", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 5.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 },
+    { id: "y", label: "YESTERDAY", cat: "LOCATIVE", parent: "p", h: 0.0 },
+    { id: "pk",label: "park", cat: "LOCATIVE", parent: "b", h: 0.0 }
+  ]},
+  { name: "EN-08: Dog bit man quickly [manner]", lang: "English", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "q", label: "quickly", cat: "MANNER", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 }
+  ]},
+  { name: "TR-01: Kopek adami isirdi [Turkish exact]", lang: "Turkish", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 }
+  ]},
+  { name: "TR-02: Kopek adami parkta isirdi [extended]", lang: "Turkish", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 5.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 },
+    { id: "pk",label: "park", cat: "LOCATIVE", parent: "b", h: 0.0 }
+  ]},
+  { name: "MH-01: Wahonwa'kahra'ko' [Mohawk bite]", lang: "Mohawk", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 }
+  ]},
+  { name: "MH-02: [Mohawk with yesterday]", lang: "Mohawk", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 },
+    { id: "y", label: "YESTERDAY", cat: "LOCATIVE", parent: "p", h: 0.0 }
+  ]},
+  { name: "FI-01: Koira puri miesta eilen [Finnish exact]", lang: "Finnish", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 },
+    { id: "y", label: "YESTERDAY", cat: "LOCATIVE", parent: "p", h: 0.0 }
+  ]},
+  { name: "IK-01: Qimmiq angutimik kiisijuq [Inuktitut exact]", lang: "Inuktitut", nodes: [
+    { id: "b", label: "BITE", cat: "ACTION", parent: null, h: 4.0 },
+    { id: "d", label: "dog", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "m", label: "man", cat: "ENTITY", parent: "b", h: 0.0 },
+    { id: "p", label: "PAST", cat: "TENSE", parent: "b", h: 2.0 }
+  ]}
+];
+
+// ===== STATE =====
+let selectedNodes = [];
+let currentTree = null;
+let nodePositions = {};
+
+// Category colors
+const catColors = {
+  ACTION: '#e94560', ENTITY: '#0f3460', TENSE: '#f0a500',
+  LOCATIVE: '#00b894', MANNER: '#6c5ce7', ASPECT: '#a29bfe',
+  EVIDENTIAL: '#fd79a8', LOGICAL: '#636e72'
+};
+
+// ===== INIT =====
+function init() {
+  const sel = document.getElementById('treeSelect');
+  corpusData.forEach((t, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `[${t.lang}] ${t.name}`;
+    sel.appendChild(opt);
+  });
+}
+
+function loadTree() {
+  const idx = document.getElementById('treeSelect').value;
+  if (idx === '') return;
+  currentTree = corpusData[parseInt(idx)];
+  selectedNodes = [];
+  updateInfo();
+  renderTree();
+  document.getElementById('statusMsg').textContent =
+    `Loaded: ${currentTree.name}  |  Click nodes to select, see LCA & ultrametric distance`;
+}
+
+// ===== TREE RENDERING =====
+function buildHierarchy() {
+  const nodeMap = {};
+  const children = {};
+  currentTree.nodes.forEach(n => {
+    nodeMap[n.id] = n;
+    if (!children[n.id]) children[n.id] = [];
+  });
+  currentTree.nodes.forEach(n => {
+    if (n.parent) {
+      if (!children[n.parent]) children[n.parent] = [];
+      children[n.parent].push(n.id);
+    }
+  });
+  return { nodeMap, children };
+}
+
+function layoutTree() {
+  const { nodeMap, children } = buildHierarchy();
+  const root = currentTree.nodes.find(n => n.parent === null);
+  if (!root) return { positions: {}, width: 0, height: 0 };
+
+  // Assign x positions (inorder traversal of leaves)
+  const leaves = currentTree.nodes.filter(n =>
+    !children[n.id] || children[n.id].length === 0
+  ).map(n => n.id);
+  const leafX = {};
+  leaves.forEach((lid, i) => { leafX[lid] = i + 1; });
+
+  // Assign x to internal nodes (average of children)
+  function assignX(nid) {
+    const ch = children[nid] || [];
+    if (ch.length === 0) return leafX[nid] || 1;
+    let sum = 0;
+    ch.forEach(c => { sum += assignX(c); });
+    const avg = sum / ch.length;
+    leafX[nid] = avg;
+    return avg;
+  }
+  assignX(root.id);
+
+  // Compute y from height
+  const maxH = Math.max(...currentTree.nodes.map(n => n.h), 1);
+  const positions = {};
+  currentTree.nodes.forEach(n => {
+    positions[n.id] = {
+      x: leafX[n.id] * 140,
+      y: 500 - (n.h / maxH) * 420 - 40
+    };
+  });
+
+  return { positions, width: (leaves.length + 1) * 140, height: 500 };
+}
+
+function renderTree() {
+  const svg = document.getElementById('treeSvg');
+  const { nodeMap, children } = buildHierarchy();
+  const { positions, width } = layoutTree();
+
+  svg.setAttribute('width', Math.max(width, 800));
+  svg.setAttribute('height', 520);
+  svg.innerHTML = '';
+
+  // Add a subtle grid
+  const grid = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  grid.setAttribute('opacity', '0.05');
+  for (let x = 0; x < width; x += 70) {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x); line.setAttribute('y1', 0);
+    line.setAttribute('x2', x); line.setAttribute('y2', 520);
+    line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '0.5');
+    grid.appendChild(line);
+  }
+  svg.appendChild(grid);
+
+  // Draw edges
+  currentTree.nodes.forEach(n => {
+    if (!n.parent) return;
+    const pPos = positions[n.parent];
+    const cPos = positions[n.id];
+    if (!pPos || !cPos) return;
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', pPos.x); line.setAttribute('y1', pPos.y);
+    line.setAttribute('x2', cPos.x); line.setAttribute('y2', cPos.y);
+    line.setAttribute('class', 'edge-line');
+    line.setAttribute('data-from', n.parent);
+    line.setAttribute('data-to', n.id);
+    svg.appendChild(line);
+  });
+
+  // Draw nodes
+  currentTree.nodes.forEach(n => {
+    const pos = positions[n.id];
+    if (!pos) return;
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('transform', `translate(${pos.x}, ${pos.y})`);
+    g.setAttribute('data-id', n.id);
+
+    // Circle
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', n.h === 0 ? '14' : '18');
+    circle.setAttribute('fill', catColors[n.cat] || '#888');
+    circle.setAttribute('class', 'node-circle');
+    circle.setAttribute('data-id', n.id);
+    circle.addEventListener('click', () => onNodeClick(n.id));
+    g.appendChild(circle);
+
+    // Label
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('y', '-20');
+    label.setAttribute('class', 'label-text');
+    label.textContent = n.label;
+    g.appendChild(label);
+
+    // Category
+    const cat = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    cat.setAttribute('y', '30');
+    cat.setAttribute('class', 'category-text');
+    cat.textContent = n.cat;
+    g.appendChild(cat);
+
+    svg.appendChild(g);
+  });
+
+  // Redraw selection highlights
+  if (selectedNodes.length > 0) updateHighlights();
+}
+
+// ===== INTERACTION =====
+function onNodeClick(nodeId) {
+  if (selectedNodes.length >= 2) selectedNodes = [];
+  if (!selectedNodes.includes(nodeId)) selectedNodes.push(nodeId);
+  updateHighlights();
+  updateSelectionInfo();
+}
+
+function updateHighlights() {
+  // Clear all highlights
+  document.querySelectorAll('.node-circle').forEach(c => {
+    c.classList.remove('selected', 'lca-highlight');
+  });
+  document.querySelectorAll('.edge-line').forEach(l => {
+    l.classList.remove('lca-path');
+  });
+
+  // Highlight selected nodes
+  selectedNodes.forEach(id => {
+    const circle = document.querySelector(`circle[data-id="${id}"]`);
+    if (circle) circle.classList.add('selected');
+  });
+
+  // If two nodes selected, highlight LCA
+  if (selectedNodes.length === 2 && currentTree) {
+    const lcaId = computeLCA(selectedNodes[0], selectedNodes[1]);
+    if (lcaId) {
+      const circle = document.querySelector(`circle[data-id="${lcaId}"]`);
+      if (circle) circle.classList.add('lca-highlight');
+
+      // Highlight path to LCA
+      highlightPath(selectedNodes[0], lcaId);
+      highlightPath(selectedNodes[1], lcaId);
+    }
+  }
+}
+
+function highlightPath(fromId, toId) {
+  let current = fromId;
+  const { nodeMap } = buildHierarchy();
+  const visited = new Set();
+  while (current && current !== toId) {
+    const node = nodeMap[current];
+    if (!node || visited.has(current)) break;
+    visited.add(current);
+    // Highlight edge from parent to this node
+    if (node.parent) {
+      const edges = document.querySelectorAll(`line[data-to="${current}"]`);
+      edges.forEach(e => e.classList.add('lca-path'));
+    }
+    current = node.parent;
+  }
+}
+
+function computeLCA(id1, id2) {
+  const { nodeMap } = buildHierarchy();
+  const ancestors = new Set();
+  let cur = id1;
+  while (cur) {
+    ancestors.add(cur);
+    const node = nodeMap[cur];
+    cur = node ? node.parent : null;
+  }
+  cur = id2;
+  while (cur) {
+    if (ancestors.has(cur)) return cur;
+    const node = nodeMap[cur];
+    cur = node ? node.parent : null;
+  }
+  return null;
+}
+
+function clearSelection() {
+  selectedNodes = [];
+  updateHighlights();
+  document.getElementById('selectionInfo').style.display = 'none';
+  document.getElementById('lcaInfo').style.display = 'none';
+  document.getElementById('statusMsg').textContent =
+    currentTree ? `Loaded: ${currentTree.name}` : 'Select a tree from the sidebar to begin';
+}
+
+function updateSelectionInfo() {
+  const selDiv = document.getElementById('selectionInfo');
+  const lcaDiv = document.getElementById('lcaInfo');
+  const selInfo = document.getElementById('selInfo');
+
+  selDiv.style.display = 'block';
+
+  if (selectedNodes.length === 0) {
+    selInfo.textContent = 'Click two nodes to compare';
+    lcaDiv.style.display = 'none';
+  } else if (selectedNodes.length === 1) {
+    const n = currentTree.nodes.find(x => x.id === selectedNodes[0]);
+    selInfo.textContent = `Selected: ${n.label} (${n.cat}, h=${n.h}) — Click another node`;
+    lcaDiv.style.display = 'none';
+  } else if (selectedNodes.length === 2) {
+    const a = currentTree.nodes.find(x => x.id === selectedNodes[0]);
+    const b = currentTree.nodes.find(x => x.id === selectedNodes[1]);
+    selInfo.textContent = `A: ${a.label} (${a.cat})  |  B: ${b.label} (${b.cat})`;
+
+    const lcaId = computeLCA(selectedNodes[0], selectedNodes[1]);
+    if (lcaId) {
+      const lca = currentTree.nodes.find(x => x.id === lcaId);
+      const dist = lca.h;
+      lcaDiv.style.display = 'block';
+      document.getElementById('lcaLabel').textContent = `${lca.label} (${lca.cat})`;
+      document.getElementById('lcaDist').textContent = `${dist.toFixed(1)} (height of LCA)`;
+      document.getElementById('lcaUltra').textContent =
+        `d(${a.label},${b.label}) = h(LCA(${a.label},${b.label})) = ${dist.toFixed(1)}`;
+    }
+  }
+}
+
+function updateInfo() {
+  if (!currentTree) return;
+  const { children } = buildHierarchy();
+  const leaves = currentTree.nodes.filter(n => !children[n.id] || children[n.id].length === 0);
+  const maxH = Math.max(...currentTree.nodes.map(n => n.h));
+
+  document.getElementById('infoLang').textContent = currentTree.lang;
+  document.getElementById('infoNodes').textContent = currentTree.nodes.length;
+  document.getElementById('infoLeaves').textContent = leaves.length;
+  document.getElementById('infoHeight').textContent = maxH.toFixed(1);
+
+  // Ultrametric check: all leaf triples must satisfy d(x,z) <= max(d(x,y), d(y,z))
+  let violations = 0, total = 0;
+  for (let i = 0; i < leaves.length; i++) {
+    for (let j = i+1; j < leaves.length; j++) {
+      for (let k = j+1; k < leaves.length; k++) {
+        total++;
+        const lca_ij = computeLCA(leaves[i].id, leaves[j].id);
+        const lca_jk = computeLCA(leaves[j].id, leaves[k].id);
+        const lca_ik = computeLCA(leaves[i].id, leaves[k].id);
+        const dij = currentTree.nodes.find(n => n.id === lca_ij).h;
+        const djk = currentTree.nodes.find(n => n.id === lca_jk).h;
+        const dik = currentTree.nodes.find(n => n.id === lca_ik).h;
+        if (dik > Math.max(dij, djk) + 1e-10) violations++;
+      }
+    }
+  }
+  document.getElementById('infoUltra').textContent =
+    violations === 0 ? `PASS (${total} triples)` : `FAIL (${violations}/${total})`;
+  document.getElementById('infoUltra').style.color = violations === 0 ? '#00b894' : '#e94560';
+}
+
+// ===== STARTUP =====
+init();
+</script>
+</body>
+</html>
