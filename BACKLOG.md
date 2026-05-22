@@ -11,29 +11,25 @@
 | **P2** | Could have later | Nice-to-have, not committed |
 | **P3** | Won't have now | Deferred or rejected |
 
-## Backlog
+## Completed (6 Sprints — 28 Tasks)
 
-| Priority | Item | Description | Est. Effort | Dependencies | Status |
-|:---------|:-----|:------------|:------------|:-------------|:-------|
-| P0 | S2.3: Enhanced Corpus | Expand from 5 to 15+ documents, add 2 more languages | 2h | S2.2 | Not Started |
-| P0 | S2.4: Turkish in 0.2.py | Add Turkish tree to formal verification suite | 1h | — | Not Started |
-| P0 | S2.5: Publication Polish | 0.7.md: abstract, author block, YAML, curly quotes, Language Gate | 2h | All above | Not Started |
-| P0 | S2.6: Reader Testing Round 2 | Second blind reader test per §11.5 CPL L27 | 1h | S2.5 | Not Started |
-| P1 | Python Prototype: Graph Parser | Full parser that converts example sentences to graphs from morphological output | 4h | S2.2 | Not Started |
-| P1 | Python Prototype: Sub-Graph Matcher | Full subgraph isomorphism for larger graphs (100+ nodes) | 4h | S2.1 | Not Started |
-| P2 | Cross-Linguistic Corpus | Collect parallel texts in English + polysynthetic languages | 8h | S2.2 | Not Started |
-| P2 | Evaluation Framework | Define precision/recall metrics for sub-graph search | 3h | S2.1 | Not Started |
-| P2 | Visualization Tool | Interactive tree viewer for nested semantic graphs | 5h | S1 | Not Started |
-| P3 | Full-Scale Implementation | Production search engine on nested semantic graphs | 100h+ | All P1 | Not Started |
-| P3 | Neural Semantic Parser | Train or fine-tune a parser for the common representation | 100h+ | P2 | Not Started |
+| Sprint | Tasks | Deliverables |
+|:-------|:------|:-------------|
+| **S1** — Formalization | S0–S6 | 0.1.md (Lit Review), 0.2.md+0.2.py (Definitions+Verification), 0.3.md (Search Spec), 0.4.md (Cross-Ling Examples), 0.5.py (Pipeline Prototype), 0.6.md (Computational Pathway), 0.7.md (Synthesis Draft) |
+| **S2** — From Prototype to Production | S2.0–S2.6 | 0.8.py (Type III Edit Distance), 0.8.md (Morph Survey), 0.9.py (12-Doc Corpus), 0.2.py (Turkish Verification), 0.7.md (Publication Polish), Reader Testing R2 |
+| **S3** — Evidence | S3.1–S3.6 | 0.10.py (Turkish Pipeline+Eval), 0.10.md (Eval Framework), 0.11.py (25-Doc Corpus+Benchmarks) |
+| **S4** — Evidence to Impact | S4.1–S4.4 | 0.12.html (NST Visualization), 0.12.md (Corpus Spec), 0.7.md (v1.0 Final, DOI: 10.5281/zenodo.20348370) |
+| **S5** — Production Readiness | S5.1–S5.4 | nst_core.py (Shared Library), 0.13.py (Large-Graph Matcher), 0.14.json (Corpus Seed) |
+| **S6** — Final Completion | S6.1–S6.10 | All scripts refactored to nst_core, .gitignore, demo.py (Quick-Start), Docs refresh |
 
-## Completed (Retained for Audit)
+## Remaining Backlog
 
-| Priority | Item | Deliverable | Completed | Notes |
-|:---------|:-----|:------------|:----------|:------|
-| P0 | Sprint 1 (S0-S6) | 0.1.md through 0.7.md, 0.2.py, 0.5.py | 2026-05-22 | 7 tasks, 8 content files, 14 commits |
-| P0 | S2.1: Type III Matching | 0.8.py (272 lines) | 2026-05-22 | Zhang-Shasha DP. Pipeline: I/II/III fallback. |
-| P0 | S2.2: Morphological Survey | 0.8.md | 2026-05-22 | English→Mohawk. Mohawk FST gap identified. |
+| Priority | Item | Description | Est. | Status |
+|:---------|:-----|:------------|:-----|:-------|
+| P2 | Connect Real Zemberek | Replace simulation with live Turkish morphological analyzer | 4h | Deferred |
+| P2 | Finnish HFST Pipeline | Connect Finnish morphological analyzer | 3h | Deferred |
+| P3 | Full-Scale Implementation | Production search engine on ultrametric trees | 100h+ | Deferred |
+| P3 | Neural Semantic Parser | Train parser for common representation | 100h+ | Deferred |
 
 ---
-*Last updated: 2026-05-22 (Sprint 2: 2/7 complete)*
+*Last updated: 2026-05-22 (Project complete. 6 sprints, 27 commits.)*
