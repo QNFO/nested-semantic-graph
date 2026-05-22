@@ -213,6 +213,27 @@ def build_mohawk_dog_bite_tree():
     return tree
 
 
+def build_turkish_dog_bite_tree():
+    """
+    Build NST for Turkish equivalent (agglutinative).
+
+    Turkish: "Kopek adami dun isirdi"
+    (dog man-ACC yesterday bite-PAST)
+
+    Same tree structure as English and Mohawk.
+    """
+    tree = NestedSemanticTree("Turkish: kopek adami dun isirdi")
+
+    tree.add_node("bite_tr", "BITE", "ACTION", parent_id=None, height=4.0)
+    tree.add_node("dog_tr", "dog", "ENTITY", parent_id="bite_tr", height=0.0)
+    tree.add_node("man_tr", "man", "ENTITY", parent_id="bite_tr", height=0.0)
+    tree.add_node("past_tr", "PAST", "TENSE", parent_id="bite_tr", height=2.0)
+    tree.add_node("yest_tr", "YESTERDAY", "LOCATIVE", parent_id="past_tr", height=0.0)
+
+    tree.preprocess_lca()
+    return tree
+
+
 def build_deep_tree():
     """Build a deeper tree for more thorough ultrametric verification."""
     tree = NestedSemanticTree("Deep test tree")
@@ -400,6 +421,7 @@ def main():
     # --- Build example trees ---
     en_tree = build_english_dog_bite_tree()
     moh_tree = build_mohawk_dog_bite_tree()
+    tur_tree = build_turkish_dog_bite_tree()
     deep_tree = build_deep_tree()
 
     all_passed = True
@@ -408,14 +430,14 @@ def main():
 
     # --- Test 1: Tree Structure ---
     print("\n[TEST 1] Tree Structure")
-    for tree in [en_tree, moh_tree, deep_tree]:
+    for tree in [en_tree, moh_tree, tur_tree, deep_tree]:
         n = len(tree.nodes)
         leaves = tree.get_leaf_ids()
         print(f"  {tree.name}: {n} nodes, {len(leaves)} leaves, root={tree.root.id}")
 
     # --- Test 2: LCA and Ultrametric Distance ---
     print("\n[TEST 2] LCA and Ultrametric Distance")
-    for tree in [en_tree, moh_tree, deep_tree]:
+    for tree in [en_tree, moh_tree, tur_tree, deep_tree]:
         leaves = tree.get_leaf_ids()
         if len(leaves) >= 2:
             a, b = leaves[0], leaves[1]
@@ -427,7 +449,7 @@ def main():
 
     # --- Test 3: Ultrametric Inequality ---
     print("\n[TEST 3] Ultrametric Inequality: d(x,z) <= max(d(x,y), d(y,z))")
-    for tree in [en_tree, moh_tree, deep_tree]:
+    for tree in [en_tree, moh_tree, tur_tree, deep_tree]:
         passed, total, violations = verify_ultrametric_inequality(tree)
         total_checks += total
         total_violations += len(violations)
@@ -438,7 +460,7 @@ def main():
 
     # --- Test 4: Triadic Rigidity ---
     print("\n[TEST 4] Triadic Rigidity: All triangles are isosceles")
-    for tree in [en_tree, moh_tree, deep_tree]:
+    for tree in [en_tree, moh_tree, tur_tree, deep_tree]:
         total, rigid, non_rigid = verify_triadic_rigidity(tree)
         total_checks += total
         status = "[PASS]" if len(non_rigid) == 0 else "[FAIL]"
@@ -449,8 +471,11 @@ def main():
     # --- Test 5: Language Neutrality ---
     print("\n[TEST 5] Language Neutrality: English and Mohawk trees are isomorphic")
     iso, reason = verify_isomorphism(en_tree, moh_tree)
+    iso_tr, reason_tr = verify_isomorphism(en_tree, tur_tree)
     status = "[PASS]" if iso else "[FAIL]"
-    print(f"  {status} {reason}")
+    status_tr = "[PASS]" if iso_tr else "[FAIL]"
+    print(f"  {status} English-Mohawk: {reason}")
+    print(f"  {status_tr} English-Turkish: {reason_tr}")
 
     # --- Test 6: Token Encoding ---
     print("\n[TEST 6] Token Encoding (Q-PNA §3.2)")
@@ -479,7 +504,7 @@ def main():
 
     # Compute complete summary
     checks_summary = {}
-    for tree in [en_tree, moh_tree, deep_tree]:
+    for tree in [en_tree, moh_tree, tur_tree, deep_tree]:
         _, t, v = verify_ultrametric_inequality(tree)
         checks_summary[tree.name] = (t, len(v))
 
