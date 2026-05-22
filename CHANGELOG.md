@@ -6,6 +6,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **0.10.py: Turkish Morphological Pipeline** — Sprint 3.1 deliverable. Zemberek simulator, NST builder from morphological parses, subtree search, precision/recall/MRR evaluation. 15-document Turkish corpus, 10 queries, 15/15 ultrametric verification passed.
+- **0.10.md: Pipeline Results** — Full analysis: Mean P@5=0.180, R@5=0.375, F1@5=0.230, MRR=0.382. Honest finding: Type I matching too rigid for morphological variation — motivates Type II/III integration.
 - **0.2.md: Formal Definitions** — 11 formal mathematical definitions, 2 theorems (Ultrametric Inequality, Language Neutrality), connections to Tree Cophenetic and Q-PNA §2-3.
 - **0.2.py: Python Verification Suite** — NestedSemanticTree class, binary-lifting LCA (O(log n)), exhaustive ultrametric verification across 3 trees (22/22 passed).
 - **0.3.md: Sub-Graph Matching Search Spec** — Formal specification: search problem definition, three-tier matching criteria (Type I exact subtree isomorphism, Type II partial match, Type III tree edit distance), RANK-AND-CLUSTER algorithm with ultrametric cluster detection, full pipeline connecting Q-PNA encoder to NSG matcher, complexity analysis, worked walkthrough, and 8 limitations.
