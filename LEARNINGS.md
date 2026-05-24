@@ -1,9 +1,17 @@
-# Project Learnings — Nested Semantic Graph
+# ⚠️ DEPRECATED -- Migrated to GitHub-Native Features
 
-> **Kaizen engine:** Every lesson is a prevented future mistake. Format: "## L\<N\>: \<one-line summary\>" followed by context and actionable rule.
-> Lessons tagged "Cross-Project: YES" are candidates for promotion to `G:\My Drive\projects\_shared\CROSS-PROJECT-LEARNINGS.md`.
+**This file is superseded by GitHub-native project management tools.**
 
-*No lessons recorded yet. Lessons will be added as they emerge during project execution.*
+All QNFO repos now use GitHub-native features for project management:
+- **Wiki** for persistent documentation (charter, learnings, DoD, state)
+- **Issues** for backlog, risks, and tasks with priority labels
+- **Projects** for sprint/kanban tracking
+- **Discussions** for decisions and announcements
+- **Releases** for versioned changelogs
 
----
-*Generated from LEARNINGS-TEMPLATE.md v1.0. Add new lessons at the top (L1 is most recent). Periodically review for CPL promotion candidates.*
+See the [QWAV Wiki](https://github.com/QNFO/QWAV/wiki) for the reference implementation.
+See the [QNFO org Projects](https://github.com/orgs/QNFO/projects) for cross-project tracking.
+
+**This file will not be updated. Do not edit.**
+
+*Migrated 2026-05-24 during org-wide PM file deprecation.*
