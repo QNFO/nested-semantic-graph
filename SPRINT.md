@@ -1,24 +1,17 @@
-# Sprint 6 — Final Completion
-# Sprint Backlog — Nested Semantic Graph
+# ⚠️ DEPRECATED -- Migrated to GitHub-Native Features
 
-**Sprint Goal:** Close every remaining gap. Refactor, document, deploy, benchmark, demo.
-**Started:** 2026-05-22
-**Status:** Active
+**This file is superseded by GitHub-native project management tools.**
 
-## Active Tasks
+All QNFO repos now use GitHub-native features for project management:
+- **Wiki** for persistent documentation (charter, learnings, DoD, state)
+- **Issues** for backlog, risks, and tasks with priority labels
+- **Projects** for sprint/kanban tracking
+- **Discussions** for decisions and announcements
+- **Releases** for versioned changelogs
 
-| ID | Task | Est. | Status |
-|:---|:-----|:-----|:-------|
-| S6.1 | Refactor 0.8–0.11.py to nst_core | 2h | [~] |
-| S6.2 | Docs refresh: BACKLOG, CHANGELOG, SPRINT, PROJECT STATE | 1h | [ ] |
-| S6.3 | .gitignore + __pycache__ cleanup | 0.5h | [ ] |
-| S6.4 | Real Turkish pipeline (Zemberek connect) | 4h | [ ] |
-| S6.5 | Finnish morphological pipeline | 2h | [ ] |
-| S6.6 | Expand corpus seed to 10+ propositions | 2h | [ ] |
-| S6.7 | Deploy visualization demo | 1h | [ ] |
-| S6.8 | Keyword baseline benchmark | 3h | [ ] |
-| S6.9 | Quick-start demo (demo.py) | 1h | [ ] |
-| S6.10 | Final audit + close-out | 0.5h | [ ] |
+See the [QWAV Wiki](https://github.com/QNFO/QWAV/wiki) for the reference implementation.
+See the [QNFO org Projects](https://github.com/orgs/QNFO/projects) for cross-project tracking.
 
-## Sprint Health
-- Tasks completed: 0/10
+**This file will not be updated. Do not edit.**
+
+*Migrated 2026-05-24 during org-wide PM file deprecation.*
