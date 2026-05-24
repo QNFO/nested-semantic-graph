@@ -1,72 +1,17 @@
-# Definition of Done — Nested Semantic Graph
+# ⚠️ DEPRECATED -- Migrated to GitHub-Native Features
 
-**Project:** Nested Semantic Graph
-**Phase:** P2 Execution
-**Last Updated:** 2026-05-22
+**This file is superseded by GitHub-native project management tools.**
 
-## What "Done" Means for This Project
+All QNFO repos now use GitHub-native features for project management:
+- **Wiki** for persistent documentation (charter, learnings, DoD, state)
+- **Issues** for backlog, risks, and tasks with priority labels
+- **Projects** for sprint/kanban tracking
+- **Discussions** for decisions and announcements
+- **Releases** for versioned changelogs
 
-A task is **done** only when ALL applicable criteria below are satisfied. Tasks marked complete without satisfying DoD criteria are `[~]` in-progress, not `[x]` complete.
+See the [QWAV Wiki](https://github.com/QNFO/QWAV/wiki) for the reference implementation.
+See the [QNFO org Projects](https://github.com/orgs/QNFO/projects) for cross-project tracking.
 
-## DoD Criteria by Deliverable Type
+**This file will not be updated. Do not edit.**
 
-### A. Document Deliverables (e.g., 0.1.md, 0.2.md, 0.3.md, 0.4.md)
-
-- [ ] File exists on disk (Test-Path confirmed)
-- [ ] File has non-zero size (Get-Item .Length > 0)
-- [ ] All claims traceable to source: `[CODE-EXECUTED]`, `[EXTERNAL-SOURCE: path]`, or `[LLM-INFERRED]`
-- [ ] All mathematical content in $...$ or $$...$$ (no bare Unicode math)
-- [ ] No placeholder DOIs (`########`, `XXXX`)
-- [ ] Date fields verified against `datetime.date.today()`
-- [ ] No generation artifacts (bracket-delimited markers)
-- [ ] References section is complete and accurate
-- [ ] Git-committed with descriptive message
-
-### B. Python Code Deliverables (e.g., 0.2.py)
-
-- [ ] File exists on disk
-- [ ] Executes without errors (Python exit code 0)
-- [ ] All verification checks pass (explicit PASS/FAIL output)
-- [ ] No Unicode outside cp1252 in critical output
-- [ ] Self-contained: only standard library imports unless documented
-- [ ] Docstrings explain purpose of each function/class
-- [ ] Git-committed with descriptive message
-
-### C. Project Management Updates
-
-- [ ] SPRINT.md updated with task status change
-- [ ] CHANGELOG.md updated with deliverable entry
-- [ ] PROJECT STATE.md updated with current status
-- [ ] All changes committed to feature branch
-
-### D. Cross-Linguistic / Linguistics Deliverables
-
-- [ ] Language examples labeled `[LLM-INFERRED]` unless verified against native speaker or reference grammar
-- [ ] Mohawk/Iroquoian examples follow standard Iroquoianist transcription conventions
-- [ ] Entropy/statistical values from Language-Info-Architecture cited with "synthetic data" caveat
-
-### E. Publication-Quality Standards
-
-- [ ] Reader testing conducted (REVIEWER subagent, §11.5 protocol)
-- [ ] All `[BLOCKING]` and `[MAJOR]` issues resolved
-- [ ] Publication Language Gate scan passed (§11.7)
-- [ ] YAML frontmatter complete (if publication document)
-- [ ] Curly/smart quotes in body text (Python scan verified)
-- [ ] Publication-ready filename (descriptive, not versioned)
-
----
-
-## Current Sprint Tasks and Their DoD
-
-| Task ID | DoD Criteria Applicable | Status |
-|:--------|:------------------------|:-------|
-| S0 — Internal Literature Review | All A criteria | [x] |
-| S1 — Formal Definitions | A (document) + B (code) + C (project mgmt) | [x] |
-| S2 — Search Spec | A (document) + C (project mgmt) | [x] |
-| S3 — Cross-Linguistic Examples | A + D + C | [x] |
-| S4 — Python Prototype | B + C | [ ] |
-| S5 — Computational Pathway | A + C | [ ] |
-| S6 — Reader Testing | A + E + C | [ ] |
-
----
-*Generated from DEFINITION-OF-DONE-TEMPLATE.md v1.0.*
+*Migrated 2026-05-24 during org-wide PM file deprecation.*
